@@ -8,7 +8,7 @@ SPRING_DATASOURCE_PLATFORM=mysql
 MYSQL_SERVICE_HOST=172.88.0.10
 MYSQL_SERVICE_DB_NAME=nacos_devtest
 MYSQL_SERVICE_PORT=3306
-MYSQL_SERVICE_USER=root
+MYSQL_SERVICE_USER=nacos_devtest
 MYSQL_SERVICE_PASSWORD=123456
 MYSQL_SERVICE_DB_PARAM=characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
 
