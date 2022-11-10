@@ -1,4 +1,4 @@
-## 运行说明
+## 说明
 [nginx-proxy地址](https://github.com/nginx-proxy/nginx-proxy)
 
 执行`docker run`时增加如下环境变量

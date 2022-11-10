@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-
-VIRTUAL_HOST=域名
+VIRTUAL_HOST=nexus.wangchao.im
 VIRTUAL_PORT=8081
-
 
 docker run -d --name nexus3 \
  --network ingot-net \
