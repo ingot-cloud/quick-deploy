@@ -1,0 +1,36 @@
+version: '2'
+
+
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /ingot-data/docker/volumes/nginx-proxy/conf:/etc/nginx/conf.d
+      - /ingot-data/docker/volumes/nginx-proxy/vhost:/etc/nginx/vhost.d
+      - /ingot-data/docker/volumes/nginx-proxy/html:/usr/share/nginx/html
+      - /ingot-data/docker/volumes/nginx-proxy/dhparam:/etc/nginx/dhparam
+      - /ingot-data/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    restart: always
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /data/ingot/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:rw
+      - /data/ingot/docker/volumes/nginx-proxy/acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+networks:
+  default:
+    external:
+      name: ingot-net
