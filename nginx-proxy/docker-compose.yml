@@ -25,8 +25,8 @@ services:
     volumes_from:
       - nginx-proxy
     volumes:
-      - /data/ingot/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:rw
-      - /data/ingot/docker/volumes/nginx-proxy/acme:/etc/acme.sh
+      - /ingot-data/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:rw
+      - /ingot-data/docker/volumes/nginx-proxy/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 

@@ -20,8 +20,8 @@ docker run --name registry \
  --network ingot-net --ip 172.88.0.5 \
  --restart=always \
  --privileged=true \
- -v /data/ingot/docker/volumes/registry/images:/var/lib/registry \
- -v /data/ingot/docker/volumes/registry/auth:/auth \
+ -v /ingot-data/docker/volumes/registry/images:/var/lib/registry \
+ -v /ingot-data/docker/volumes/registry/auth:/auth \
  -e VIRTUAL_HOST=${VIRTUAL_HOST} \
  -e VIRTUAL_PORT=${VIRTUAL_PORT} \
  -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
