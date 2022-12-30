@@ -22,6 +22,13 @@ docker run --name nacos-server \
   -p 9848:9848 \
   -p 9555:9555 \
   -e MODE=${MODE} \
+  -e SPRING_DATASOURCE_PLATFORM=${SPRING_DATASOURCE_PLATFORM} \
+  -e MYSQL_SERVICE_HOST=${MYSQL_SERVICE_HOST} \
+  -e MYSQL_SERVICE_DB_NAME=${MYSQL_SERVICE_DB_NAME} \
+  -e MYSQL_SERVICE_PORT=${MYSQL_SERVICE_PORT} \
+  -e MYSQL_SERVICE_USER=${MYSQL_SERVICE_USER} \
+  -e MYSQL_SERVICE_PASSWORD=${MYSQL_SERVICE_PASSWORD} \
+  -e MYSQL_SERVICE_DB_PARAM=${MYSQL_SERVICE_DB_PARAM} \
   -v /ingot-data/docker/volumes/nacos-server/logs:/home/nacos/logs \
   -v /ingot-data/docker/volumes/nacos-server/custom.properties:/home/nacos/init.d/custom.properties \
   -d nacos/nacos-server:${NACOS_VERSION}
