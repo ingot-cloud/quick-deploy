@@ -11,7 +11,7 @@ VIRTUAL_HOST=minio.wangchao.im
 VIRTUAL_PORT=5001
 
 docker run --name minio \
-     --network ingot-net --ip 172.88.0.100 \
+     --network ingot-net --ip 172.88.0.150 \
      -p 5000:9000 \
      -d --restart=always \
      -e MINIO_ACCESS_KEY=admin \
