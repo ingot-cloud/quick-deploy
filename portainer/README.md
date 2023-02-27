@@ -8,6 +8,7 @@ portainer-agent, 注意如果设置AGENT_SECRET，那么portainer在启动的时
 docker run -d --name portainer_agent \
  --network ingot-net \
  --restart=always \
+ -p 9001:9001 \
  -e AGENT_SECRET=123456 \
  -v /var/run/docker.sock:/var/run/docker.sock \
  -v /var/lib/docker/volumes:/var/lib/docker/volumes \
