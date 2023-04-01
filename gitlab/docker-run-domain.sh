@@ -11,7 +11,9 @@ mkdir -p /ingot-data/docker/volumes/gitlab/opt
 VIRTUAL_HOST=gitlab.wangchao.im
 VIRTUAL_PORT=80
 
+# 80,443,22
 docker run --name gitlab \
+  --hostname ${VIRTUAL_HOST} \
   --network ingot-net --ip 172.88.0.200 \
   -d --restart=always \
   --privileged=true \
