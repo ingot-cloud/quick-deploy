@@ -4,6 +4,11 @@
   * port: 80, 443, 22
   * 初始密码在 /etc/gitlab/initial_root_password
 
+### Nginx
+  * 修改nginx `client_max_body_size`
+    1. 在/etc/gitlab/gitlab.rb找到nginx配置
+    2. 修改 nginx['client_max_body_size'] = '1024m'
+    3. 执行命令 gitlab-ctl reconfigure
 
 ### Clone地址
 #### 1.Clone with Https
@@ -23,7 +28,7 @@
   3. 按要求输入相关信息即可
   ```
   Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):
-  http://192.168.1.xxxxx/
+  https://gitlab.wangchao.im/
 
   Please enter the gitlab-ci token for this runner:
   pnsBhDZy_iYH_xxxxxx
