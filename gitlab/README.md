@@ -46,3 +46,10 @@
   docker:20.10.9
 
   ```
+  4. 修改config.toml文件
+  ```
+  打开/etc/gitlab-runner/config.toml文件
+  找到volumes，加入"/var/run/docker.sock:/var/run/docker.sock"
+  加入后结果如下
+  volumes = ["/var/run/docker.sock:/var/run/docker.sock","/cache"]
+  ```
