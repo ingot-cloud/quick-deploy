@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NACOS_VERSION=v2.1.2
+NACOS_VERSION=v2.2.3
 CURRENT_PATH=`cd $(dirname $0);pwd -P`
 
 MODE=standalone
