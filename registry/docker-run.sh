@@ -12,7 +12,7 @@ mkdir -p /ingot-data/docker/volumes/registry/auth
 cp ${currentPath}/auth/* /ingot-data/docker/volumes/registry/auth
 
 
-VIRTUAL_HOST=docker-registry.wangchao.im
+VIRTUAL_HOST=docker-registry.ingotcloud.top
 VIRTUAL_PORT=5000
 
 

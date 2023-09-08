@@ -7,7 +7,7 @@ currentPath=`cd $(dirname $0);pwd -P`
 mkdir -p /ingot-data/docker/volumes/minio/data
 mkdir -p /ingot-data/docker/volumes/minio/config
 
-VIRTUAL_HOST=minio.wangchao.im
+VIRTUAL_HOST=minio.ingotcloud.top
 VIRTUAL_PORT=5001
 
 docker run --name minio \

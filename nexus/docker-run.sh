@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VIRTUAL_HOST=nexus.wangchao.im
+VIRTUAL_HOST=nexus.ingotcloud.top
 VIRTUAL_PORT=8081
 
 docker run -d --name nexus3 \

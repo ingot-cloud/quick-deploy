@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-VIRTUAL_HOST=portainer.wangchao.im
+VIRTUAL_HOST=portainer.ingotcloud.top
 VIRTUAL_PORT=9000
 
 
@@ -14,4 +14,4 @@ docker run -d --name portainer \
  -e AGENT_SECRET=123456 \
  -v /var/run/docker.sock:/var/run/docker.sock \
  -v portainer_data:/data \
- portainer/portainer-ce
+ portainer/portainer-ee

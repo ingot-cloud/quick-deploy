@@ -2,9 +2,9 @@
 
 version=0.1.0
 serviceName=minio-api-${version}
-imageName=docker-registry.wangchao.im/ingot/minio-api:${version}
+imageName=docker-registry.ingotcloud.top/ingot/minio-api:${version}
 
-VIRTUAL_HOST=oss-api.wangchao.im
+VIRTUAL_HOST=oss-api.ingotcloud.top
 VIRTUAL_PORT=3000
 
 # 停止运行当前容器

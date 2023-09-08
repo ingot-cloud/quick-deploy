@@ -4,7 +4,7 @@
 mkdir -p /ingot-data/docker/volumes/rabbitmq3.7.7
 
 
-VIRTUAL_HOST=rabbitmq.wangchao.im
+VIRTUAL_HOST=rabbitmq.ingotcloud.top
 VIRTUAL_PORT=15672
 
 

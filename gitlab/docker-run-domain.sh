@@ -8,7 +8,7 @@ mkdir -p /ingot-data/docker/volumes/gitlab/etc
 mkdir -p /ingot-data/docker/volumes/gitlab/log
 mkdir -p /ingot-data/docker/volumes/gitlab/opt
 
-VIRTUAL_HOST=gitlab.wangchao.im
+VIRTUAL_HOST=gitlab.ingotcloud.top
 VIRTUAL_PORT=80
 
 # 80,443,22

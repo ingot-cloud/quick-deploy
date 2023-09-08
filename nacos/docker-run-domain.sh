@@ -15,7 +15,7 @@ MYSQL_SERVICE_DB_PARAM=characterEncoding=utf8&connectTimeout=1000&socketTimeout=
 mkdir -p /ingot-data/docker/volumes/nacos-server/logs
 cp ${CURRENT_PATH}/custom.properties /ingot-data/docker/volumes/nacos-server
 
-VIRTUAL_HOST=nacos.wangchao.im
+VIRTUAL_HOST=nacos.ingotcloud.top
 VIRTUAL_PORT=8848
 
 docker run --name nacos-server \
