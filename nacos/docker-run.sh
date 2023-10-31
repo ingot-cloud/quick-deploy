@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-NACOS_VERSION=v2.2.3
+# slim 适配 arm 架构
+NACOS_VERSION=v2.2.3-slim
 CURRENT_PATH=`cd $(dirname $0);pwd -P`
 
 MODE=standalone
