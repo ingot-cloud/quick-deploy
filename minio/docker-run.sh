@@ -9,7 +9,7 @@ mkdir -p /ingot-data/docker/volumes/minio/config
 
 docker run --name minio \
      --network ingot-net --ip 172.88.0.150 \
-     -p 6000:9000 \
+     -p 9090:9000 \
      -p 6001:5001 \
      -d --restart=always \
      -e MINIO_ACCESS_KEY=admin \
