@@ -18,6 +18,7 @@ docker run --name minio \
      -d --restart=always \
      -e VIRTUAL_HOST=${VIRTUAL_HOST} \
      -e VIRTUAL_PORT=${VIRTUAL_PORT} \
+     -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
      -e MINIO_ROOT_USER=${default_user} \
      -e MINIO_ROOT_PASSWORD=${default_user_pwd} \
      -v /ingot-data/docker/volumes/minio/data:/data \
