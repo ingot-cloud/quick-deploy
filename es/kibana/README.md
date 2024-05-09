@@ -26,6 +26,8 @@ server.shutdownTimeout: "5s"
 elasticsearch.hosts: [ "http://es01-test:9200" ]
 monitoring.ui.container.elasticsearch.enabled: true
 i18n.locale: "zh-CN"
+elasticsearch.username: "elastic"
+elasticsearch.password: "你的es密码"
 ```
 
 4. 挂载重新run

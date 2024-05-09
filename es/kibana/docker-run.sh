@@ -2,6 +2,7 @@
 
 docker run --name kibana \
  -d --restart=always \
+ --privileged=true \
  --network ingot-net --ip 172.88.0.130  \
  -p 5601:5601 \
  -v /ingot-data/docker/volumes/kibana/config:/usr/share/kibana/config \
