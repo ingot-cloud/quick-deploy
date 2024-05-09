@@ -8,6 +8,7 @@ cp ${currentPath}/elasticsearch.yml /ingot-data/docker/volumes/es/elasticsearch.
 
 docker run --name elasticsearch \
  -d --restart=always \
+ --network ingot-net --ip 172.88.0.140  \
  -p 9200:9200 \
  -p 9300:9300 \
  -e "discovery.type=single-node" \
