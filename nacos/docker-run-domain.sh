@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NACOS_VERSION=v2.1.2
+NACOS_VERSION=v2.2.3
 CURRENT_PATH=`cd $(dirname $0);pwd -P`
 
 # 系统启动方式: 集群/单机 cluster/standalone 默认 cluster
@@ -21,7 +21,7 @@ NACOS_AUTH_ENABLE=true
 NACOS_AUTH_SYSTEM_TYPE=nacos
 # token 失效时间
 NACOS_AUTH_TOKEN_EXPIRE_SECONDS=7200
-# token 至少32位，base64  ingotingotingotingotingotingotingot
+# token 至少32位,base64  ingotingotingotingotingotingotingot
 NACOS_AUTH_TOKEN=aW5nb3RpbmdvdGluZ290aW5nb3RpbmdvdGluZ290aW5nb3Q=
 # nacos.core.auth.server.identity.key
 NACOS_AUTH_IDENTITY_KEY=ingot
