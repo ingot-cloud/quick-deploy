@@ -22,7 +22,7 @@ NACOS_AUTH_ENABLE=true
 NACOS_AUTH_SYSTEM_TYPE=nacos
 # token 失效时间
 NACOS_AUTH_TOKEN_EXPIRE_SECONDS=7200
-# token 至少32位  ingotingotingotingotingotingotingot
+# token 至少32位,base64  ingotingotingotingotingotingotingot
 NACOS_AUTH_TOKEN=aW5nb3RpbmdvdGluZ290aW5nb3RpbmdvdGluZ290aW5nb3Q=
 # nacos.core.auth.server.identity.key
 NACOS_AUTH_IDENTITY_KEY=ingot
