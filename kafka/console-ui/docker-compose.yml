@@ -16,5 +16,11 @@ services:
     user: root
     # 镜像地址
     image: "wdkang/kafka-console-ui"
+    networks:
+      - ingot-net
     expose:
       - "7766"
+
+networks:
+  ingot-net:
+    external: true
