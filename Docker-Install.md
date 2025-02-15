@@ -50,6 +50,18 @@ sudo yum -y install docker-ce
 sudo service docker start
 ```
 
+#### 配置镜像加速器
+```bash
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://9z89zmsy.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
 
 ## 安装docker-compose
 ```bash
