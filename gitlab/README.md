@@ -24,8 +24,9 @@
 
 ### Runner
   1. 运行gitlab-runner.sh
-  2. 进入控制台执行`gitlab-runner register`
-  3. 按要求输入相关信息即可
+  2. `docker exec -it 2f1793e01315 /bin/bash` 进入镜像
+  3. 进入控制台执行`gitlab-runner register`
+  4. 按要求输入相关信息即可
   ```
   Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):
   https://gitlab.wangchao.im/
@@ -43,10 +44,10 @@
   docker
 
   Please enter the default Docker image (e.g. ruby:2.6):
-  docker:20.10.9
+  docker:27.5.1
 
   ```
-  4. 修改config.toml文件
+  5. 修改config.toml文件
   ```
   打开/etc/gitlab-runner/config.toml文件
   找到volumes，加入"/var/run/docker.sock:/var/run/docker.sock"
