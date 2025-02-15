@@ -53,4 +53,8 @@
   找到volumes，加入"/var/run/docker.sock:/var/run/docker.sock"
   加入后结果如下
   volumes = ["/var/run/docker.sock:/var/run/docker.sock","/cache"]
+
+  在 [runners.docker]中加入"pull_policy: if-not-present", 如果本地存在镜像那么不拉取, 具体查看文档https://docs.gitlab.com/runner/executors/docker.html#configure-how-runners-pull-images
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock","/cache"]
+    pull_policy: if-not-present
   ```
