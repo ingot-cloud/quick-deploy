@@ -55,7 +55,7 @@ sudo service docker start
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
 {
-  "registry-mirrors": ["https://9z89zmsy.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://xxxxx/"]
 }
 EOF
 sudo systemctl daemon-reload
