@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+
+currentPath=`cd $(dirname $0);pwd -P`
+
+VIRTUAL_HOST=zentao.ingotcloud.top
+VIRTUAL_PORT=80
+
+# zentao配置
+ZT_VERSION=21.6
+ZT_PATH_DATA=/ingot-data/docker/volumes/chandao/data
+# mysql配置
+ZT_MYSQL_HOST=172.88.0.10
+ZT_MYSQL_PORT=3306
+ZT_MYSQL_USER=root
+ZT_MYSQL_PASSWORD=123456
+ZT_MYSQL_DB=zentao
+# redis配置
+ZT_REDIS_HOST=172.88.0.90
+ZT_REDIS_PORT=6379
+ZT_REDIS_PASSWORD=ingotredis
+ZT_REDIS_SERIALIZER=igbinary # php, igbinary
+ZT_REDIS_DATABASE=8 # 默认禅道为0
+ZT_CACHE_ENABLE=true
+ZT_CACHE_TYPE=redis
+ZT_CACHE_SCOPE=private
+ZT_CACHE_LIFETIME=0
+# 其他配置
+PHP_MAX_EXECUTION_TIME=300
+PHP_POST_MAX_SIZE=512M
+PHP_UPLOAD_MAX_FILESIZE=512M
+
+mkdir -p ${ZT_PATH_DATA}
+
+docker run --name zentao \
+    --network ingot-net \
+    -d --restart always \
+    -v ${ZT_PATH_DATA}:/data \
+    -e VIRTUAL_HOST=${VIRTUAL_HOST} \
+    -e VIRTUAL_PORT=${VIRTUAL_PORT} \
+    -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
+    -e ZT_MYSQL_HOST=${ZT_MYSQL_HOST} \
+    -e ZT_MYSQL_PORT=${ZT_MYSQL_HOST} \
+    -e ZT_MYSQL_USER=${ZT_MYSQL_HOST} \
+    -e ZT_MYSQL_PASSWORD=${ZT_MYSQL_HOST} \
+    -e ZT_MYSQL_DB=${ZT_MYSQL_HOST} \
+    -e ZT_REDIS_HOST=${ZT_REDIS_HOST} \
+    -e ZT_REDIS_PORT=${ZT_REDIS_PORT} \
+    -e ZT_REDIS_PASSWORD=${ZT_REDIS_PASSWORD} \
+    -e ZT_REDIS_SERIALIZER=${ZT_REDIS_SERIALIZER} \
+    -e ZT_REDIS_DATABASE=${ZT_REDIS_DATABASE} \
+    -e ZT_CACHE_ENABLE=${ZT_CACHE_ENABLE} \
+    -e ZT_CACHE_TYPE=${ZT_CACHE_TYPE} \
+    -e ZT_CACHE_SCOPE=${ZT_CACHE_SCOPE} \
+    -e ZT_CACHE_LIFETIME=${ZT_CACHE_LIFETIME} \
+    -e PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME} \
+    -e PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE} \
+    -e PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE} \
+    hub.zentao.net/app/zentao:${ZT_VERSION}
