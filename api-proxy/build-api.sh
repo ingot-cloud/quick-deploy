@@ -1,6 +1,6 @@
 
 INNER_VERSION=0.1.0
-MODULE_NAME=wande62-api
+MODULE_NAME=proxy-api
 
 # source ./.local_env
 
