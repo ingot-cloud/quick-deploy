@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION=0.1.0
-SERVICE_NAME=proxy-api-${version}
+SERVICE_NAME=proxy-api-${VERSION}
 IMAGE_NAME=docker-registry.ingotcloud.top/ingot/proxy-api:${VERSION}
 
 VIRTUAL_HOST=proxy-api.ingotcloud.top
