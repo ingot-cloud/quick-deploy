@@ -1,8 +1,8 @@
 ## 说明
 [doc](https://docs.portainer.io/v/be-2.10/start/install/server/docker/linux)
 
-portainer-agent, 注意如果设置AGENT_SECRET，那么portainer在启动的时候也需要设置对应的秘钥
-```
+ * portainer-agent, 注意如果设置AGENT_SECRET，那么portainer在启动的时候也需要设置对应的秘钥
+```shell
 #!/usr/bin/env bash
 
 docker run -d --name portainer_agent \
@@ -15,8 +15,8 @@ docker run -d --name portainer_agent \
  portainer/agent:latest
 ```
 
-portainer商业版，需要申请License，[官网](https://www.portainer.io/)
-```
+ * portainer商业版，需要申请License，[官网](https://www.portainer.io/)
+```shell
 #!/usr/bin/env bash
 
 
