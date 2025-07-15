@@ -13,4 +13,4 @@ docker run --name mysql-5.7 \
  -p 3306:3306 \
  -e MYSQL_ROOT_PASSWORD=123456 \
  -v /ingot-data/docker/volumes/mysql-5.7/volumes:/var/lib/mysql \
- -d mysql:5.7
+ -d mysql/mysql-server:5.7
