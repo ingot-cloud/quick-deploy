@@ -4,6 +4,7 @@ services:
   kafka-console-ui:
     # 容器名
     container_name: "kafka-console-ui"
+    restart: always
     # 端口
     ports:
       - "7766:7766"

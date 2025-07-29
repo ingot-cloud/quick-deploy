@@ -4,6 +4,7 @@ services:
   kafka1:
     container_name: kafka1
     image: "bitnami/kafka:3.8.0"
+    restart: always
     ports:
       - "19092:9092"
       - "19093:9093"
@@ -42,6 +43,7 @@ services:
   kafka2:
     container_name: kafka2
     image: "bitnami/kafka:3.8.0"
+    restart: always
     ports:
       - "29092:9092"
       - "29093:9093"
@@ -80,6 +82,7 @@ services:
   kafka3:
     container_name: kafka3
     image: "bitnami/kafka:3.8.0"
+    restart: always
     ports:
       - "39092:9092"
       - "39093:9093"
