@@ -34,6 +34,8 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=1
+      # 消息保留时间毫秒，优先级高于 log.retention.hours KAFKA_CFG_LOG_RETENTION_HOURS
+      - KAFKA_CFG_LOG_RETENTION_MS=1000
     volumes:
       - /ingot-data/docker/volumes/kafka/broker1:/bitnami/kafka:rw
 
@@ -70,6 +72,8 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=2
+      # 消息保留时间毫秒，优先级高于 log.retention.hours KAFKA_CFG_LOG_RETENTION_HOURS
+      - KAFKA_CFG_LOG_RETENTION_MS=1000
     volumes:
       - /ingot-data/docker/volumes/kafka/broker2:/bitnami/kafka:rw
 
@@ -106,6 +110,8 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=3
+      # 消息保留时间毫秒，优先级高于 log.retention.hours KAFKA_CFG_LOG_RETENTION_HOURS
+      - KAFKA_CFG_LOG_RETENTION_MS=1000
     volumes:
       - /ingot-data/docker/volumes/kafka/broker3:/bitnami/kafka:rw
 

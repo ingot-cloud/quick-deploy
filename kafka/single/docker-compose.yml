@@ -29,8 +29,10 @@ services:
       # 使用Kafka时的集群id，集群内的Kafka都要用这个id做初始化，生成一个UUID即可(22byte)
       - KAFKA_KRAFT_CLUSTER_ID=xYcCyHmJlIaLzLoBzVwIcP
       # 允许使用PLAINTEXT监听器，默认false，不建议在生产环境使用
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      - ALLOW_PLAINTEXT_LISTENER=false
       # 不允许自动创建主题
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=1
+      # 消息保留时间毫秒，优先级高于 log.retention.hours KAFKA_CFG_LOG_RETENTION_HOURS
+      - KAFKA_CFG_LOG_RETENTION_MS=1000
