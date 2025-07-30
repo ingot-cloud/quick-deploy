@@ -4,6 +4,6 @@ currentPath=`cd $(dirname $0);pwd -P`
 
 source ./.env
 
-mkdir -p /ingot-data/docker/volumes/kafka/${BROKER1_NAME}
+mkdir -p ${BROKER1_VOLUME}
 
 docker compose up -d
