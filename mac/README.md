@@ -6,7 +6,7 @@
  - 安装 Termius（SSH 可视化管理）
  - 安装 Zsh、Oh My Zsh、Powerlevel10k 美化
  - 安装 fzf（模糊搜索）、tmux（终端多路复用）
- - 配好自动补全、命令提示、语法高亮
+ - sshc 命令可直接模糊搜索 ~/.ssh/config 里的 Host 并自动连接
 
 ## 批量导入文件示例（ssh_hosts.txt）
  - 路径：~/ssh_hosts.txt
