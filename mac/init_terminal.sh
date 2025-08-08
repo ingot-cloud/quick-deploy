@@ -27,18 +27,12 @@ else
     echo "✅ 已检测到 Oh My Zsh"
 fi
 
-# === 安装 Powerlevel10k ===
-if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
-    echo "📦 安装 Powerlevel10k 主题..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
-      ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-fi
-
 # === 配置 Zsh 插件 ===
 echo "⚙️ 配置 Zsh 插件..."
-sed -i '' 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 if ! grep -q "zsh-autosuggestions" ~/.zshrc; then
     sed -i '' 's/^plugins=(/plugins=(zsh-autosuggestions zsh-syntax-highlighting /' ~/.zshrc
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
 # === 配置 fzf ===
