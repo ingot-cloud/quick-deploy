@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: docker-registry.ingotcloud.top/postgres:17.6
+    container_name: postgres
+    networks:
+      - extnet
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Wc.1331588182
+      POSTGRES_DB: mydb
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - /ingot-data/docker/volumes/postgres/data:/var/lib/postgresql/data
+      - /ingot-data/docker/volumes/postgres/backups:/backups
+
+  pgadmin:
+    image: docker-registry.ingotcloud.top/dpage/pgadmin4:9.6
+    container_name: pgadmin
+    networks:
+      - extnet
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: magician.of.technique@aliyun.com
+      PGADMIN_DEFAULT_PASSWORD: 1331588182
+      VIRTUAL_HOST: pgadmin.ingotcloud.top
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: pgadmin.ingotcloud.top
+    ports:
+      - "8088:80"
+    depends_on:
+      - postgres
+    volumes:
+      - /ingot-data/docker/volumes/postgres/pgadmin:/var/lib/pgadmin
+
+  # backup:
+  #   image: docker-registry.ingotcloud.top/postgres:17.6
+  #   container_name: postgres_backup
+  #   restart: always
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - /ingot-data/docker/volumes/postgres/backups:/backups
+  #   entrypoint: >
+  #     bash -c "
+  #     while true; do
+  #       pg_dump -h postgres -U admin mydb > /backups/mydb_$(date +%Y%m%d%H%M%S).sql;
+  #       sleep 86400;
+  #     done
+  #     "
+  #   environment:
+  #     PGPASSWORD: 123456
+
+networks:
+  extnet:
+    name: ingot-net
+    external: true
