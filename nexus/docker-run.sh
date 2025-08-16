@@ -10,4 +10,4 @@ docker run -d --name nexus3 \
  -e VIRTUAL_PORT=${VIRTUAL_PORT} \
  -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
  -v nexus-data:/nexus-data \
- sonatype/nexus3
+ docker-registry.ingotcloud.top/sonatype/nexus3:3.83.0
