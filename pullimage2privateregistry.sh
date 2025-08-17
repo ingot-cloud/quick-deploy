@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # 拉取镜像并且推送到私有仓库,保持多架构
-IMAGE=minio/minio
-TAG=RELEASE.2025-04-22T22-12-26Z
+IMAGE=dpage/pgadmin4
+TAG=9.6
 PRIVATE_REGISTRY=docker-registry.ingotcloud.top
 
 # 1. 分别拉取两种架构的镜像并标记

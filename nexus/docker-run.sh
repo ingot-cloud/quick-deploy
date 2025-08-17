@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-VIRTUAL_HOST=nexus.ingotcloud.top
-VIRTUAL_PORT=8081
 
-docker run -d --name nexus3 \
- --network ingot-net \
- --restart always \
- -e VIRTUAL_HOST=${VIRTUAL_HOST} \
- -e VIRTUAL_PORT=${VIRTUAL_PORT} \
- -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
- -v nexus-data:/nexus-data \
- docker-registry.ingotcloud.top/sonatype/nexus3:3.83.0
+mkdir -p /ingot-data/docker/volumes/nexus3/data
+
+# 启动nexus，如果没有postgres，那么需要都启动
+docker compose up nexus -d

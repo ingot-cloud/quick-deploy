@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: docker-registry.ingotcloud.top/postgres:17.6
+    container_name: postgres
+    networks:
+      - extnet
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 111111
+      POSTGRES_DB: mydb
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - /ingot-data/docker/volumes/postgres/data:/var/lib/postgresql/data
+      - /ingot-data/docker/volumes/postgres/backups:/backups
+
+  nexus:
+    image: docker-registry.ingotcloud.top/sonatype/nexus3:3.83.0
+    container_name: nexus3
+    networks:
+      - extnet
+    restart: always
+    environment:
+      VIRTUAL_HOST: nexus.ingotcloud.top
+      LETSENCRYPT_HOST: nexus.ingotcloud.top
+      VIRTUAL_PORT: 8081
+      INSTALL4J_ADD_VM_PARAMS: >
+        -Xms1g -Xmx2g
+        -Dnexus.datastore.enabled=true
+        -Dnexus.datastore.nexus.jdbcUrl=jdbc:postgresql://postgres:5432/nexusdb
+        -Dnexus.datastore.nexus.username=admin
+        -Dnexus.datastore.nexus.password=111111
+    depends_on:
+      - postgres
+    volumes:
+      - nexus3_data:/nexus-data
+
+networks:
+  extnet:
+    name: ingot-net
+    external: true
+
+volumes:
+  nexus3_data:
