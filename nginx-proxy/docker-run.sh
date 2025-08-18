@@ -12,4 +12,4 @@ mkdir -p /ingot-data/docker/volumes/nginx-proxy/certs
 mkdir -p /ingot-data/docker/volumes/nginx-proxy/acme
 
 
-docker-compose -f ${currentPath}/docker-compose.yml up -d
+docker compose -f ${currentPath}/docker-compose.yml up -d
