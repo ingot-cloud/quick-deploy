@@ -13,4 +13,4 @@ docker run --name redis \
  -p 6379:6379 \
  -v /ingot-data/docker/volumes/redis/conf/redis.conf:/etc/redis/redis.conf \
  -v /ingot-data/docker/volumes/redis/data:/data \
- -d redis:8.0.1 redis-server /etc/redis/redis.conf --appendonly yes
+ -d docker-registry.ingotcloud.top/redis:8.2.0 redis-server /etc/redis/redis.conf --appendonly yes
