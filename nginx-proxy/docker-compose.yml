@@ -1,11 +1,12 @@
 version: '2'
 
-
 services:
   nginx-proxy:
     image: docker-registry.ingotcloud.top/nginxproxy/nginx-proxy:1.8
     container_name: nginx-proxy
     restart: always
+    networks:
+      - extnet
     ports:
       - "80:80"
       - "443:443"
@@ -22,6 +23,8 @@ services:
     image: docker-registry.ingotcloud.top/nginxproxy/acme-companion:2.6
     container_name: nginx-proxy-acme
     restart: always
+    networks:
+      - extnet
     volumes_from:
       - nginx-proxy
     volumes:
@@ -29,8 +32,7 @@ services:
       - /ingot-data/docker/volumes/nginx-proxy/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-
 networks:
-  default:
-    external:
-      name: ingot-net
+  extnet:
+    name: ingot-net
+    external: true
