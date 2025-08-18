@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # 拉取镜像并且推送到私有仓库,保持多架构
-IMAGE=nacos/nacos-server
-TAG=v3.0.0
+IMAGE=nginxproxy/acme-companion
+TAG=2.6
 PRIVATE_REGISTRY=docker-registry.ingotcloud.top
 
 # 1. 分别拉取两种架构的镜像并标记
