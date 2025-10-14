@@ -3,7 +3,7 @@
 
 currentPath=`cd $(dirname $0);pwd -P`
 
-minio_version=latest
+minio_version=RELEASE.2025-04-22T22-12-26Z
 default_user=admin
 default_user_pwd=12345678
 
@@ -18,4 +18,4 @@ docker run --name minio \
      -e MINIO_ROOT_USER=${default_user} \
      -e MINIO_ROOT_PASSWORD=${default_user_pwd} \
      -v /ingot-data/docker/volumes/minio/data:/data \
-     minio/minio:${minio_version} 'server' '/data' '--console-address' ':5001' '-address' ':9000'
+     docker-registry.ingotcloud.top/minio/minio:${minio_version} 'server' '/data' '--console-address' ':5001' '-address' ':9000'
