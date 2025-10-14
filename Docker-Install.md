@@ -1,23 +1,5 @@
 # 准备工作
 
-## 安装docker
-```bash
-# yum 包更新
-[root@centos7 ~]# yum update
-# 卸载旧版本 Docker
-[root@centos7 ~]# yum remove docker docker-common docker-selinux docker-engine
-# 安装软件包
-[root@centos7 ~]# yum install -y yum-utils device-mapper-persistent-data lvm2
-# 添加 Docker yum源
-[root@centos7 ~]# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-# 安装 Docker
-[root@centos7 ~]# yum -y install docker-ce
-# 启动 Docker
-[root@centos7 ~]# systemctl start docker
-# 查看 Docker 版本号
-[root@centos7 ~]# docker —version
-```
-
 ### 使用阿里云镜像
 #### 自动安装
 ```bash
@@ -47,7 +29,7 @@ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/cen
 sudo yum makecache fast
 sudo yum -y install docker-ce
 # Step 4: 开启Docker服务
-sudo service docker start
+sudo systemctl start docker
 ```
 
 #### 配置镜像加速器
