@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # 拉取镜像并且推送到私有仓库,保持多架构
-IMAGE=nginx
-TAG=1.27.4
+IMAGE=portainer/portainer-ce
+TAG=2.33.5
 PRIVATE_REGISTRY=docker-registry.ingotcloud.top
 
 # 1. 分别拉取两种架构的镜像并标记
