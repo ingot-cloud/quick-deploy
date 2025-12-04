@@ -71,9 +71,9 @@ services:
       KAFKA_SOCKET_REQUEST_MAX_BYTES: 104857600  # 100MB 请求上限
 
       ##########################################################
-      # =============== 5. JVM 优化（32G 机器） =================
+      # =============== 5. JVM 优化 =================
       ##########################################################
-      KAFKA_HEAP_OPTS: "-Xms4G -Xmx4G"            # 可根据吞吐调整
+      KAFKA_HEAP_OPTS: "${BROKER_HEAP_OPTS}"            # 可根据吞吐调整
       KAFKA_JVM_PERFORMANCE_OPTS: >
         -server
         -XX:+UseG1GC

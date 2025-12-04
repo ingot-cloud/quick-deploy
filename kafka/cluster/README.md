@@ -1,18 +1,144 @@
-## 说明
+## Kafka 集群版说明（KRaft 3 节点）
 
-挂载volumes如果遇到权限问题
-```
- mkdir: cannot create directory '/bitnami/kafka/config': Permission denied
-```
-需要给目录增加权限
-```
-sudo chown -R 1001:1001 kafka
+本目录提供一个 **3 节点 KRaft 模式的 Kafka 企业级集群配置**，包含：
+
+- `docker-compose.yml`：集群服务编排（3 个 broker + 1 个 AKHQ）
+- `.env`（需你自己创建）：集群相关的环境变量（示例见下文）
+
+> 注意：请在 `cluster` 目录下自行创建 `.env` 文件，并根据下面示例填入实际值。
+
+---
+
+### 1. 环境变量示例（请复制为 `.env` 后按需修改）
+
+```env
+# 堆大小，可根据物理内存和负载调整
+BROKER_HEAP_OPTS=-Xmx512m -Xms256m
+##############################################################
+# 集群基础配置（KRaft 模式）
+##############################################################
+# Kafka 集群唯一 ID，生产环境建议使用 kafka-storage.sh 生成并固定
+CLUSTER_ID=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# controller 选举节点配置（KRaft）
+# 这里约定：
+#   - node.id=1, controller 监听端口 9093，对应 kafka-broker-1
+#   - node.id=2, controller 监听端口 9093，对应 kafka-broker-2
+#   - node.id=3, controller 监听端口 9093，对应 kafka-broker-3
+CLUSTER_CONTROLLER_SERVERS=${CLUSTER_BROKER1_ID}@${CLUSTER_BROKER1_NAME}:9093,${CLUSTER_BROKER2_ID}@${CLUSTER_BROKER2_NAME}:9093,${CLUSTER_BROKER3_ID}@${CLUSTER_BROKER3_NAME}:9093
+
+##############################################################
+# 内部 Topic 副本配置（企业级：3 副本 + ISR=2）
+##############################################################
+# consumer offset 存储 topic 的副本数，生产环境建议为 3
+CLUSTER_OFFSETS_TOPIC_REPLICATION_FACTOR=3
+# 事务状态日志的副本数
+CLUSTER_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3
+# 事务状态日志最小同步副本数（建议 副本数-1，用于保障可用性）
+CLUSTER_TRANSACTION_STATE_LOG_MIN_ISR=2
+
+##############################################################
+# Broker 1
+##############################################################
+# Broker1 在集群中的 node.id，必须与其他 broker 不重复
+CLUSTER_BROKER1_ID=1
+# Broker1 容器名称，和 docker-compose 中的 container_name 对应
+CLUSTER_BROKER1_NAME=kafka-broker-1
+# 对外暴露给客户端访问的宿主机地址（可以是 IP 或域名）
+CLUSTER_BROKER1_HOST=ingot.localhost
+# 对外暴露给客户端访问的端口（宿主机侧端口）
+CLUSTER_BROKER1_PORT=19092
+# Broker1 controller 端口（宿主机侧端口），用于 KRaft controller 通信
+CLUSTER_BROKER1_CONTROLLER_PORT=19093
+# Broker1 数据挂载目录，建议挂到独立数据盘
+CLUSTER_BROKER1_VOLUME=/ingot-data/docker/volumes/kafka/${CLUSTER_BROKER1_NAME}
+
+##############################################################
+# Broker 2
+##############################################################
+CLUSTER_BROKER2_ID=2
+CLUSTER_BROKER2_NAME=kafka-broker-2
+CLUSTER_BROKER2_HOST=ingot.localhost
+CLUSTER_BROKER2_PORT=29092
+CLUSTER_BROKER2_CONTROLLER_PORT=29093
+CLUSTER_BROKER2_VOLUME=/ingot-data/docker/volumes/kafka/${CLUSTER_BROKER2_NAME}
+
+##############################################################
+# Broker 3
+##############################################################
+CLUSTER_BROKER3_ID=3
+CLUSTER_BROKER3_NAME=kafka-broker-3
+CLUSTER_BROKER3_HOST=ingot.localhost
+CLUSTER_BROKER3_PORT=39092
+CLUSTER_BROKER3_CONTROLLER_PORT=39093
+CLUSTER_BROKER3_VOLUME=/ingot-data/docker/volumes/kafka/${CLUSTER_BROKER3_NAME}
+
+##############################################################
+# AKHQ
+##############################################################
+# AKHQ 容器名称
+CLUSTER_AKHQ_NAME=akhq-cluster
+# 宿主机访问 AKHQ 的端口
+CLUSTER_AKHQ_PORT=18080
 ```
 
-相关文献[stackoverflow](https://stackoverflow.com/questions/73860963/mkdir-cannot-create-directory-bitnami-kafka-config-permission-denied)和[github issues](https://github.com/bitnami/containers/issues/41422)
+---
+
+### 2. 启动集群
+
+在 `cluster` 目录下：
+
+```bash
+cp README.md README.local.md  # 可选：备份说明
+# 按上面的示例创建 .env
+vim .env                      # 或其它编辑器
+
+docker compose up -d
+```
+
+启动完成后：
+
+- Kafka 集群对外 EXTERNAL 端口（示例）：
+  - Broker1: `localhost:19092`
+  - Broker2: `localhost:29092`
+  - Broker3: `localhost:39092`
+- AKHQ 管理界面：`http://localhost:18080`
+
+---
+
+### 3. 客户端连接示例
+
+- **容器内（同一 docker 网络）**：
+
+  ```bash
+  bootstrap.servers=kafka-broker-1:29092,kafka-broker-2:29092,kafka-broker-3:29092
+  ```
+
+- **宿主机 / 其他主机**（示例端口，按你 `.env` 为准）：
+
+  ```bash
+  bootstrap.servers=localhost:19092,localhost:29092,localhost:39092
+  ```
+
+保持和你当前单机版相同的方式：只需要把使用的 `bootstrap.servers` 改成上述集群地址即可。
 
 
-1. 配置外网访问host，目前默认是配置ingot-localhost，可以把改host配置为本机外网ip。相关配置为KAFKA_CFG_ADVERTISED_LISTENERS
-2. KAFKA_BROKER_ID 必须与 KAFKA_CFG_NODE_ID 保持一致
-3. KAFKA_KRAFT_CLUSTER_ID 可以使用菜鸟工具生成一个 22 位随机字符
-4. 以上两个部署 kafka 的 yaml 文件中，都设置了 KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false，表示不自动创建 topic，必须手动创建，比如可以通过 kafka-console-ui 的 Topic 页签来操作
+### 4. 创建topic
+```shell
+/opt/kafka/bin/kafka-topics.sh \
+  --bootstrap-server kafka-broker-1:29092 \
+  --create \
+  --topic test.tp.v1 \
+  --partitions 3 \
+  --replication-factor 1 \
+  --config compression.type=lz4 \
+  --config retention.ms=259200000 \
+  --config segment.bytes=1073741824 \
+  --config max.message.bytes=20000000
+```
+ * partitions=3 → 适度分区，保证顺序性由 key 控制，同时提高吞吐
+ * replication-factor=1 → 单机只能1
+ * compression.type=lz4 → 高速压缩，提高磁盘利用率
+ * segment.bytes=1GB → 日志切割方便管理
+ * retention.ms=3天 → 满足 20GB/day 保留策略
+ * max.message.bytes=20MB → 单条最大消息
