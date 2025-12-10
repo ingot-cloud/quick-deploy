@@ -1,0 +1,44 @@
+# Docker部署脚本配置示例
+# 可以将这些值导出为环境变量,供脚本使用
+
+# ==================== 基础配置 ====================
+
+# Docker版本 (推荐: 27.4.1, 26.1.0, 25.0.5)
+DOCKER_VERSION=27.4.1
+
+# Docker Compose版本 (推荐: v2.30.3, v2.29.0)
+COMPOSE_VERSION=v2.30.3
+
+# Compose安装模式: plugin | binary | both
+COMPOSE_MODE=plugin
+
+# ==================== 离线下载配置 ====================
+
+# 目标操作系统: centos | ubuntu
+TARGET_OS=centos
+
+# 操作系统版本
+# CentOS: 7 | 8 | 9 | stream
+# Ubuntu: 20.04 | 22.04 | 24.04
+TARGET_OS_VERSION=8
+
+# 目标架构: amd64 | arm64
+TARGET_ARCH=amd64
+
+# 下载模式: all | rpm | deb | static
+DOWNLOAD_MODE=all
+
+# ==================== 使用方法 ====================
+
+# 方法1: 直接使用命令行参数(推荐)
+# ./install-docker-online.sh --docker-version 27.4.1 --compose-version v2.30.3
+
+# 方法2: 导出为环境变量
+# export DOCKER_VERSION=27.4.1
+# export COMPOSE_VERSION=v2.30.3
+# ./install-docker-online.sh --non-interactive
+
+# 方法3: 批量导出配置
+# export $(grep -v '^#' config.example | xargs)
+# ./download-docker-offline.sh --non-interactive
+
