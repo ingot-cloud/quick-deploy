@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-CURRENT_DIR=`cd $(dirname $0);pwd -P`
-WORK_DIR=/ingot-data/dockerun/mysql
-
-CONTEINER_NAME=mysql-db
-DOCKER_NETWORK=ingot-net
-DOCKER_NETWORK_IP=172.88.0.10
-MYSQL_IMAGE=docker-registry.ingotcloud.top/mysql
-MYSQL_VERSION=8.0.44
-MYSQL_PORT=3306
-MYSQL_ROOT_PASSWORD=123456
-
 echo "Deploying MySQL..."
 
 # Create data directory

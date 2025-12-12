@@ -2,14 +2,6 @@
 set -e
 
 CURRENT_DIR=`cd $(dirname $0);pwd -P`
-WORK_DIR=/ingot-data/dockerun/redis
-
-CONTEINER_NAME=redis
-DOCKER_NETWORK=ingot-net
-DOCKER_NETWORK_IP=172.88.0.90
-REDIS_IMAGE=docker-registry.ingotcloud.top/redis
-REDIS_VERSION=8.2.0
-REDIS_PORT=6379
 
 echo "Deploying Redis..."
 

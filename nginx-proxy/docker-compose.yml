@@ -2,8 +2,8 @@ version: '2'
 
 services:
   nginx-proxy:
-    image: docker-registry.ingotcloud.top/nginxproxy/nginx-proxy:1.8
-    container_name: nginx-proxy
+    image: ${NGINX_PROXY_IMAGE:-docker-registry.ingotcloud.top/nginxproxy/nginx-proxy}:${NGINX_PROXY_VERSION:-1.8}
+    container_name: ${NGINX_PROXY_CONTEINER_NAME:-nginx-proxy}
     restart: always
     networks:
       - extnet
@@ -11,28 +11,28 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /ingot-data/docker/volumes/nginx-proxy/conf:/etc/nginx/conf.d
-      - /ingot-data/docker/volumes/nginx-proxy/vhost:/etc/nginx/vhost.d
-      - /ingot-data/docker/volumes/nginx-proxy/html:/usr/share/nginx/html
-      - /ingot-data/docker/volumes/nginx-proxy/dhparam:/etc/nginx/dhparam
-      - /ingot-data/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:ro
+      - ${WORK_DIR}/volumes/conf:/etc/nginx/conf.d
+      - ${WORK_DIR}/volumes/vhost:/etc/nginx/vhost.d
+      - ${WORK_DIR}/volumes/html:/usr/share/nginx/html
+      - ${WORK_DIR}/volumes/dhparam:/etc/nginx/dhparam
+      - ${WORK_DIR}/volumes/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
 
   acme-companion:
-    image: docker-registry.ingotcloud.top/nginxproxy/acme-companion:2.6
-    container_name: nginx-proxy-acme
+    image: ${ACME_COMPANION_IMAGE:-docker-registry.ingotcloud.top/nginxproxy/acme-companion}:${ACME_COMPANION_VERSION:-2.6}
+    container_name: ${ACME_COMPANION_CONTEINER_NAME:-nginx-proxy-acme}
     restart: always
     networks:
       - extnet
     volumes_from:
-      - nginx-proxy
+      - ${NGINX_PROXY_CONTEINER_NAME:-nginx-proxy}
     volumes:
-      - /ingot-data/docker/volumes/nginx-proxy/certs:/etc/nginx/certs:rw
-      - /ingot-data/docker/volumes/nginx-proxy/acme:/etc/acme.sh
+      - ${WORK_DIR}/volumes/certs:/etc/nginx/certs:rw
+      - ${WORK_DIR}/volumes/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks:
   extnet:
-    name: ingot-net
+    name: ${DOCKER_NETWORK:-ingot-net}
     external: true
