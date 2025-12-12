@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # 拉取镜像并且推送到私有仓库,保持多架构
-IMAGE=apache/kafka
-TAG=3.8.0
+IMAGE=mysql
+TAG=8.0.44
 PRIVATE_REGISTRY=docker-registry.ingotcloud.top
 
 # 1. 分别拉取两种架构的镜像并标记
