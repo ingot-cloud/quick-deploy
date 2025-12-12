@@ -1,6 +1,7 @@
  #!/usr/bin/env bash
 set -e
 
+source ./.env
 CURRENT_DIR=`cd $(dirname $0);pwd -P`
 
 echo "Deploying Redis..."

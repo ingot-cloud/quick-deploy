@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ./.env
+
 mkdir -p ${WORK_DIR}/volumes/nginx-proxy/conf
 mkdir -p ${WORK_DIR}/volumes/nginx-proxy/vhost
 mkdir -p ${WORK_DIR}/volumes/nginx-proxy/html

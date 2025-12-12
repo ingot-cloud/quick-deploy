@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+source ./.env
+
 echo "Deploying MySQL..."
 
 # Create data directory
