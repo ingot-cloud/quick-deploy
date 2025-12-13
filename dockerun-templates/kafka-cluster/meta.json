@@ -1,0 +1,47 @@
+{
+  "id": "kafka-cluster",
+  "name": "Kafka Cluster",
+  "description": "Deploy Kafka Cluster server",
+  "category": "Message Queue",
+  "icon": "🐱",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/kafka-cluster",
+  "env_vars": {
+    "CLUSTER_BROKER1_ID": "1",
+    "CLUSTER_BROKER1_NAME": "kafka-broker-1",
+    "CLUSTER_BROKER1_HOST": "ingot.localhost",
+    "CLUSTER_BROKER1_PORT": "19092",
+    "CLUSTER_BROKER1_CONTROLLER_PORT": "19093",
+
+    "CLUSTER_BROKER2_ID": "2",
+    "CLUSTER_BROKER2_NAME": "kafka-broker-2",
+    "CLUSTER_BROKER2_HOST": "ingot.localhost",
+    "CLUSTER_BROKER2_PORT": "29092",
+    "CLUSTER_BROKER2_CONTROLLER_PORT": "29093",
+
+    "CLUSTER_BROKER3_ID": "3",
+    "CLUSTER_BROKER3_NAME": "kafka-broker-3",
+    "CLUSTER_BROKER3_HOST": "ingot.localhost",
+    "CLUSTER_BROKER3_PORT": "39092",
+    "CLUSTER_BROKER3_CONTROLLER_PORT": "39093",
+
+    "CLUSTER_ID": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "CLUSTER_OFFSETS_TOPIC_REPLICATION_FACTOR": "3",
+    "CLUSTER_TRANSACTION_STATE_LOG_REPLICATION_FACTOR": "3",
+    "CLUSTER_TRANSACTION_STATE_LOG_MIN_ISR": "2",
+
+    "BROKER_HEAP_OPTS": "-Xmx512m -Xms256m",
+    "CLUSTER_AKHQ_NAME": "akhq-cluster",
+    "CLUSTER_AKHQ_PORT": "18080"
+  },
+  "files": [
+    {
+      "file_name": "docker-compose.yml", 
+      "file_path": "docker-compose.yml",
+      "source": "files/docker-compose.yml", 
+      "file_type": "config",      
+      "description": "Docker Compose configuration for Kafka" 
+    }
+  ]
+}
+

@@ -1,0 +1,29 @@
+{
+  "id": "kafka-standalone",
+  "name": "Kafka Standalone",
+  "description": "Deploy Kafka Standalone server",
+  "category": "Message Queue",
+  "icon": "🐱",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/kafka-standalone",
+  "env_vars": {
+    "BROKER1_NAME": "kafka-standalone",
+    "BROKER1_ID": "1",
+    "BROKER1_HOST": "ingot.localhost",
+    "BROKER1_PORT": "19092",
+    "BROKER1_CONTROLLER_PORT": "19093",
+    "CLUSTER_ID": "xYcCyHmJlIaLzLoBzVwIcP",
+    "BROKER_HEAP_OPTS": "-Xmx512m -Xms256m",
+    "AKHQ_PORT": "18080"
+  },
+  "files": [
+    {
+      "file_name": "docker-compose.yml", 
+      "file_path": "docker-compose.yml",
+      "source": "files/docker-compose.yml", 
+      "file_type": "config",      
+      "description": "Docker Compose configuration for Kafka" 
+    }
+  ]
+}
+

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# controller 选举节点配置（KRaft）
+# 这里约定：
+#   - node.id=1, controller 监听端口 9093，对应 kafka-broker-1
+#   - node.id=2, controller 监听端口 9093，对应 kafka-broker-2
+#   - node.id=3, controller 监听端口 9093，对应 kafka-broker-3
+export CLUSTER_CONTROLLER_SERVERS=${CLUSTER_BROKER1_ID}@${CLUSTER_BROKER1_NAME}:9093,${CLUSTER_BROKER2_ID}@${CLUSTER_BROKER2_NAME}:9093,${CLUSTER_BROKER3_ID}@${CLUSTER_BROKER3_NAME}:9093
+
+# 挂载目录
+CLUSTER_BROKER1_VOLUME=${WORK_DIR}/${CLUSTER_BROKER1_NAME}/volumes
+CLUSTER_BROKER2_VOLUME=${WORK_DIR}/${CLUSTER_BROKER2_NAME}/volumes
+CLUSTER_BROKER3_VOLUME=${WORK_DIR}/${CLUSTER_BROKER3_NAME}/volumes
+
+# 给 Kafka 用户赋权限, 注意UID和GID，这里用的是1000
+mkdir -p ${CLUSTER_BROKER1_VOLUME}
+chown -R 1000:1000 ${CLUSTER_BROKER1_VOLUME}
+chmod -R 755 ${CLUSTER_BROKER1_VOLUME}
+
+mkdir -p ${CLUSTER_BROKER2_VOLUME}
+chown -R 1000:1000 ${CLUSTER_BROKER2_VOLUME}
+chmod -R 755 ${CLUSTER_BROKER2_VOLUME}
+
+mkdir -p ${CLUSTER_BROKER3_VOLUME}
+chown -R 1000:1000 ${CLUSTER_BROKER3_VOLUME}
+chmod -R 755 ${CLUSTER_BROKER3_VOLUME}
+
+docker compose up -d
