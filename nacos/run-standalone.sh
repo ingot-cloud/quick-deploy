@@ -2,14 +2,25 @@
 
 source ./env/standalone.env
 
-mkdir -p ${NACOS_VOLUME_ROOT}/logs
+set -e
 
-docker run --name nacos-server \
-  --network ingot-net \
+echo "Deploying Nacos Standard..."
+
+# Create data directory
+mkdir -p ${WORK_DIR}/volumes/logs
+
+# Stop and remove existing container if exists
+docker stop ${CONTEINER_NAME} 2>/dev/null || true
+docker rm ${CONTEINER_NAME} 2>/dev/null || true
+
+# Run Nacos container
+CONTAINER_ID=$(docker run -d \
+  --name ${CONTEINER_NAME} \
+  --network ${DOCKER_NETWORK} \
   --restart always \
-  -p 8181:8080 \
-  -p 8848:8848 \
-  -p 9848:9848 \
+  -p ${NACOS_CLIENT_PORT}:8080 \
+  -p ${NACOS_SERVER_PORT}:8848 \
+  -p ${NACOS_METRICS_PORT}:9848 \
   -e MODE=${MODE} \
   -e NACOS_SERVER_PORT=${NACOS_SERVER_PORT} \
   -e SPRING_DATASOURCE_PLATFORM=${SPRING_DATASOURCE_PLATFORM} \
@@ -25,5 +36,8 @@ docker run --name nacos-server \
   -e NACOS_AUTH_TOKEN=${NACOS_AUTH_TOKEN} \
   -e NACOS_AUTH_IDENTITY_KEY=${NACOS_AUTH_IDENTITY_KEY} \
   -e NACOS_AUTH_IDENTITY_VALUE=${NACOS_AUTH_IDENTITY_VALUE} \
-  -v ${NACOS_VOLUME_ROOT}/logs:/home/nacos/logs \
-  -d nacos/nacos-server:${NACOS_VERSION}
+  -v ${WORK_DIR}/volumes/logs:/home/nacos/logs \
+  ${NACOS_IMAGE}:${NACOS_VERSION})
+
+echo "Nacos Standard deployed successfully!"
+echo "Container ID: $CONTAINER_ID"
