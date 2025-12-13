@@ -78,7 +78,7 @@ services:
         -XX:MaxGCPauseMillis=20
 
     volumes:
-      - ${BROKER1_VOLUME}:/var/lib/kafka/data
+      - ${WORK_DIR}/volumes:/var/lib/kafka/data
 
   ##############################################################
   # AKHQ - Kafka 可视化管理界面
