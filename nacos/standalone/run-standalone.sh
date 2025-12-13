@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./env/standalone.env
+source ./standalone.env
 
 set -e
 
@@ -18,9 +18,8 @@ CONTAINER_ID=$(docker run -d \
   --name ${CONTEINER_NAME} \
   --network ${DOCKER_NETWORK} \
   --restart always \
-  -p ${NACOS_CLIENT_PORT}:8080 \
+  -p ${NACOS_CONSOLE_PORT}:8080 \
   -p ${NACOS_SERVER_PORT}:8848 \
-  -p ${NACOS_METRICS_PORT}:9848 \
   -e MODE=${MODE} \
   -e NACOS_SERVER_PORT=${NACOS_SERVER_PORT} \
   -e SPRING_DATASOURCE_PLATFORM=${SPRING_DATASOURCE_PLATFORM} \
