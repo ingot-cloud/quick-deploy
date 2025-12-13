@@ -1,0 +1,20 @@
+{
+  "id": "portainer",
+  "name": "Portainer",
+  "description": "Deploy Portainer server",
+  "category": "Registry",
+  "icon": "🔑",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/portainer",
+  "env_vars": {
+    "CONTEINER_NAME": "portainer",
+    "DOCKER_NETWORK": "ingot-net",
+    "PORTAINER_IMAGE": "docker-registry.ingotcloud.top/portainer/portainer-ce",
+    "PORTAINER_VERSION": "2.33.5",
+    "PORTAINER_AGENT_SECRET": "123456",
+    "PORTAINER_PORT": "9000",
+    "VIRTUAL_HOST": "portainer.ingotcloud.top",
+    "VIRTUAL_PORT": "9000"
+  },
+  "files": []
+}
