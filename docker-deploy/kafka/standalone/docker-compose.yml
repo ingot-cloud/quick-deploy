@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   ##############################################################
   # Kafka Broker - 单机企业级配置
@@ -81,8 +79,6 @@ services:
 
     volumes:
       - ${BROKER1_VOLUME}:/var/lib/kafka/data
-    env_file:
-      - ./.env
 
   ##############################################################
   # AKHQ - Kafka 可视化管理界面
@@ -102,5 +98,3 @@ services:
                 bootstrap.servers: "kafka:29092"  # 内部容器使用 INTERNAL listener 访问 Kafka
     depends_on:
       - kafka
-    env_file:
-      - ./.env

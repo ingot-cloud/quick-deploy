@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   ##############################################################
   # Kafka Cluster - 3 节点企业级配置（KRaft 模式）
@@ -126,9 +124,6 @@ services:
     volumes:
       # 将 Kafka 数据目录挂载到宿主机指定路径，避免容器销毁导致数据丢失
       - ${CLUSTER_BROKER1_VOLUME}:/var/lib/kafka/data
-    env_file:
-      # 使用当前目录下的 .env 文件统一管理可变参数
-      - ./.env
 
   ##############################################################
   # Broker 2
@@ -200,8 +195,6 @@ services:
 
     volumes:
       - ${CLUSTER_BROKER2_VOLUME}:/var/lib/kafka/data
-    env_file:
-      - ./.env
 
   ##############################################################
   # Broker 3
@@ -270,8 +263,6 @@ services:
 
     volumes:
       - ${CLUSTER_BROKER3_VOLUME}:/var/lib/kafka/data
-    env_file:
-      - ./.env
 
   ##############################################################
   # AKHQ - Kafka 可视化管理界面（连接整个集群）
@@ -297,7 +288,5 @@ services:
       - kafka-broker-1
       - kafka-broker-2
       - kafka-broker-3
-    env_file:
-      - ./.env
 
 
