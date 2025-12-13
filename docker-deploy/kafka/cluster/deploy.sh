@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-currentPath=`cd $(dirname $0);pwd -P`
-
 source ./.env
+
+CLUSTER_BROKER1_VOLUME=${WORK_DIR}/${CLUSTER_BROKER1_NAME}/volumes
+CLUSTER_BROKER2_VOLUME=${WORK_DIR}/${CLUSTER_BROKER2_NAME}/volumes
+CLUSTER_BROKER3_VOLUME=${WORK_DIR}/${CLUSTER_BROKER3_NAME}/volumes
 
 # 给 Kafka 用户赋权限, 注意UID和GID，这里用的是1000
 mkdir -p ${CLUSTER_BROKER1_VOLUME}

@@ -123,7 +123,7 @@ services:
 
     volumes:
       # 将 Kafka 数据目录挂载到宿主机指定路径，避免容器销毁导致数据丢失
-      - ${CLUSTER_BROKER1_VOLUME}:/var/lib/kafka/data
+      - ${WORK_DIR}/${CLUSTER_BROKER1_NAME}/volumes:/var/lib/kafka/data
 
   ##############################################################
   # Broker 2
@@ -194,7 +194,7 @@ services:
         -XX:MaxGCPauseMillis=20
 
     volumes:
-      - ${CLUSTER_BROKER2_VOLUME}:/var/lib/kafka/data
+      - ${WORK_DIR}/${CLUSTER_BROKER2_NAME}/volumes:/var/lib/kafka/data
 
   ##############################################################
   # Broker 3
@@ -262,7 +262,7 @@ services:
         -XX:MaxGCPauseMillis=20
 
     volumes:
-      - ${CLUSTER_BROKER3_VOLUME}:/var/lib/kafka/data
+      - ${WORK_DIR}/${CLUSTER_BROKER3_NAME}/volumes:/var/lib/kafka/data
 
   ##############################################################
   # AKHQ - Kafka 可视化管理界面（连接整个集群）

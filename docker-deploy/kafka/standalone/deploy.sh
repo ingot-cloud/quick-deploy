@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-currentPath=`cd $(dirname $0);pwd -P`
-
 source ./.env
 
 mkdir -p ${WORK_DIR}/volumes
