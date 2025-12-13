@@ -1,0 +1,58 @@
+
+{
+    "id": "nacos-cluster",
+    "name": "Nacos Cluster",
+    "description": "Deploy Nacos Cluster server",
+    "category": "Registry",
+    "icon": "🔒",
+    "main_script": "deploy.sh",
+    "work_dir": "/ingot-data/dockerun/nacos-cluster",
+    "env_vars": {
+      "DOCKER_NETWORK": "ingot-net",
+      "NACOS_IMAGE": "docker-registry.ingotcloud.top/nacos/nacos-server",
+      "NACOS_VERSION": "v3.1.1",
+
+      "NACOS1_CONTEINER_NAME": "nacos1",
+      "NACOS1_HOSTNAME": "nacos1",
+      "NACOS1_SERVER_PORT": "8848",
+      "NACOS1_CONSOLE_PORT": "8181",
+
+      "NACOS2_CONTEINER_NAME": "nacos2",
+      "NACOS2_HOSTNAME": "nacos2",
+      "NACOS2_SERVER_PORT": "8849",
+      "NACOS2_CONSOLE_PORT": "8182",
+
+      "NACOS3_CONTEINER_NAME": "nacos3",
+      "NACOS3_HOSTNAME": "nacos3",
+      "NACOS3_SERVER_PORT": "8850",
+      "NACOS3_CONSOLE_PORT": "8183",
+
+      "MODE": "cluster",
+      "NACOS_SERVERS": "nacos1:8848 nacos2:8848 nacos3:8848",
+      "PREFER_HOST_MODE": "hostname",
+      "SPRING_DATASOURCE_PLATFORM": "mysql",
+      "MYSQL_SERVICE_HOST": "172.88.0.10",
+      "MYSQL_SERVICE_DB_NAME": "ingot_nacos_config",
+      "MYSQL_SERVICE_PORT": "3306",
+      "MYSQL_SERVICE_USER": "nacos_dev",
+      "MYSQL_SERVICE_PASSWORD": "123456",
+      "MYSQL_SERVICE_DB_PARAM": "characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true",
+      "NACOS_AUTH_ENABLE": "true",
+      "NACOS_AUTH_SYSTEM_TYPE": "nacos",
+      "NACOS_AUTH_TOKEN_EXPIRE_SECONDS": "7200",
+      "NACOS_AUTH_TOKEN": "aW5nb3RpbmdvdGluZ290aW5nb3RpbmdvdGluZ290aW5nb3Q=",
+      "NACOS_AUTH_IDENTITY_KEY": "ingot-auth",
+      "NACOS_AUTH_IDENTITY_VALUE": "ingotauthvalue"
+    },
+    "files": [
+      {
+        "file_name": "cluster-hostname.yaml", 
+        "file_path": "cluster-hostname.yaml",
+        "source": "files/cluster-hostname.yaml", 
+        "file_type": "config",      
+        "description": "Cluster hostname configuration" 
+      }
+    ]
+  }
+  
+  

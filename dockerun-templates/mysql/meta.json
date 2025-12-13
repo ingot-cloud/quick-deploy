@@ -1,0 +1,20 @@
+{
+  "id": "mysql",
+  "name": "MySQL Database",
+  "description": "Deploy MySQL database server with persistent storage",
+  "category": "Database",
+  "icon": "🗄️",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/mysql",
+  "env_vars": {
+    "CONTEINER_NAME": "mysql",
+    "DOCKER_NETWORK": "ingot-net",
+    "DOCKER_NETWORK_IP": "172.88.0.10",
+    "MYSQL_IMAGE": "docker-registry.ingotcloud.top/mysql",
+    "MYSQL_PORT": "3306",
+    "MYSQL_VERSION": "8.0.44",
+    "MYSQL_ROOT_PASSWORD": "changeme"
+  },
+  "files": []
+}
+

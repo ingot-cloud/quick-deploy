@@ -1,0 +1,27 @@
+{
+  "id": "redis",
+  "name": "Redis",
+  "description": "Deploy Redis cache server",
+  "category": "Cache",
+  "icon": "⚡",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/redis",
+  "env_vars": {
+    "CONTEINER_NAME": "redis",
+    "DOCKER_NETWORK": "ingot-net",
+    "DOCKER_NETWORK_IP": "172.88.0.90",
+    "REDIS_IMAGE": "docker-registry.ingotcloud.top/redis",
+    "REDIS_PORT": "6379",
+    "REDIS_VERSION": "8.2.0"
+  },
+  "files": [
+    {
+      "file_name": "redis.conf", 
+      "file_path": "config/redis.conf",
+      "source": "files/redis.conf", 
+      "file_type": "config",      
+      "description": "配置文件" 
+    }
+  ]
+}
+

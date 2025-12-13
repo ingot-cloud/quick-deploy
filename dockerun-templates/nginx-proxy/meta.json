@@ -1,0 +1,28 @@
+{
+  "id": "nignx-proxy",
+  "name": "Nginx Proxy",
+  "description": "Automated nginx proxy for Docker containers using docker-gen",
+  "category": "Proxy",
+  "icon": "🌐",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/nginx-proxy",
+  "env_vars": {
+    "NGINX_PROXY_CONTEINER_NAME": "nginx-proxy",
+    "NGINX_PROXY_IMAGE": "docker-registry.ingotcloud.top/nginxproxy/nginx-proxy",
+    "NGINX_PROXY_VERSION": "1.8",
+    "ACME_COMPANION_CONTEINER_NAME": "nginx-proxy-acme",
+    "ACME_COMPANION_IMAGE": "docker-registry.ingotcloud.top/nginxproxy/acme-companion",
+    "ACME_COMPANION_VERSION": "2.6",
+    "DOCKER_NETWORK": "ingot-net"
+  },
+  "files": [
+    {
+      "file_name": "docker-compose.yml", 
+      "file_path": "docker-compose.yml",
+      "source": "files/docker-compose.yml", 
+      "file_type": "compose",      
+      "description": "Docker Compose configuration for Nginx Proxy" 
+    }
+  ]
+}
+

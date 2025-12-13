@@ -1,0 +1,35 @@
+
+{
+    "id": "nacos-standard",
+    "name": "Nacos Standard",
+    "description": "Deploy Nacos Standard server",
+    "category": "Registry",
+    "icon": "🔑",
+    "main_script": "deploy.sh",
+    "work_dir": "/ingot-data/dockerun/nacos-standard",
+    "env_vars": {
+      "CONTEINER_NAME": "nacos-standard",
+      "DOCKER_NETWORK": "ingot-net",
+      "NACOS_IMAGE": "docker-registry.ingotcloud.top/nacos/nacos-server",
+      "NACOS_VERSION": "v3.0.0",
+      "MODE": "standalone",
+      "NACOS_CONSOLE_PORT": "8181",
+      "NACOS_SERVER_PORT": "8848",
+      "SPRING_DATASOURCE_PLATFORM": "mysql",
+      "MYSQL_SERVICE_HOST": "172.88.0.10",
+      "MYSQL_SERVICE_DB_NAME": "ingot_nacos_config",
+      "MYSQL_SERVICE_PORT": "3306",
+      "MYSQL_SERVICE_USER": "nacos_dev",
+      "MYSQL_SERVICE_PASSWORD": "123456",
+      "MYSQL_SERVICE_DB_PARAM": "characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true",
+      "NACOS_AUTH_ENABLE": "true",
+      "NACOS_AUTH_SYSTEM_TYPE": "nacos",
+      "NACOS_AUTH_TOKEN_EXPIRE_SECONDS": "7200",
+      "NACOS_AUTH_TOKEN": "aW5nb3RpbmdvdGluZ290aW5nb3RpbmdvdGluZ290aW5nb3Q=",
+      "NACOS_AUTH_IDENTITY_KEY": "ingot-auth",
+      "NACOS_AUTH_IDENTITY_VALUE": "ingotauthvalue"
+    },
+    "files": []
+  }
+  
+  
