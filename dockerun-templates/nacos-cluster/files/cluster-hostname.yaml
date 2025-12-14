@@ -10,6 +10,8 @@ services:
     ports:
       - "${NACOS1_CONSOLE_PORT}:8080"
       - "${NACOS1_SERVER_PORT}:8848"
+      - "${NACOS1_GRPC_CLIENT_PORT}:9848"
+      - "${NACOS1_GRPC_SERVER_PORT}:9849"
     environment:
       - MODE=${MODE}
       - PREFER_HOST_MODE=${PREFER_HOST_MODE}
@@ -41,6 +43,8 @@ services:
     ports:
       - "${NACOS2_CONSOLE_PORT}:8080"
       - "${NACOS2_SERVER_PORT}:8848"
+      - "${NACOS2_GRPC_CLIENT_PORT}:9848"
+      - "${NACOS2_GRPC_SERVER_PORT}:9849"
     environment:
       - MODE=${MODE}
       - PREFER_HOST_MODE=${PREFER_HOST_MODE}
@@ -72,6 +76,8 @@ services:
     ports:
       - "${NACOS3_CONSOLE_PORT}:8080"
       - "${NACOS3_SERVER_PORT}:8848"
+      - "${NACOS3_GRPC_CLIENT_PORT}:9848"
+      - "${NACOS3_GRPC_SERVER_PORT}:9849"
     environment:
       - MODE=${MODE}
       - PREFER_HOST_MODE=${PREFER_HOST_MODE}
