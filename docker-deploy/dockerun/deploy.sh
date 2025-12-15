@@ -18,8 +18,6 @@ NC='\033[0m'
 CONTAINER_NAME="dockerun"
 IMAGE_NAME="docker-registry.ingotcloud.top/ingot/dockerun:0.1.0"
 HOST_PORT="19000"
-VIRTUAL_HOST=dockerun.ingotcloud.top
-VIRTUAL_PORT=8080
 # TEMPLATES_VOLUME="/ingot-data/dockerun/templates"  # 模板现在内置在镜像中
 
 # 日志函数
@@ -87,9 +85,6 @@ start_container() {
             --name "${CONTAINER_NAME}" \
             -p "${HOST_PORT}:8080" \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -e VIRTUAL_HOST=${VIRTUAL_HOST} \
-            -e VIRTUAL_PORT=${VIRTUAL_PORT} \
-            -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
             --restart unless-stopped \
             "${IMAGE_NAME}"
     fi
@@ -154,6 +149,13 @@ remove_container() {
     fi
 }
 
+# 删除镜像
+remove_image() {
+    log_info "删除 Dockerun 镜像..."
+    docker rmi "${IMAGE_NAME}"
+    log_success "镜像已删除"
+}
+
 # 查看日志
 show_logs() {
     if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
@@ -202,14 +204,15 @@ show_help() {
     echo "用法: ./run.sh [命令]"
     echo ""
     echo "命令:"
-    echo "  start     启动容器（默认）"
-    echo "  stop      停止容器"
-    echo "  restart   重启容器"
-    echo "  remove    删除容器"
-    echo "  logs      查看日志"
-    echo "  status    查看状态"
-    echo "  shell     进入容器 shell"
-    echo "  help      显示帮助"
+    echo "  start             启动容器（默认）"
+    echo "  stop              停止容器"
+    echo "  restart           重启容器"
+    echo "  remove|rm         删除容器"
+    echo "  remove-image|rmi  删除镜像"
+    echo "  logs              查看日志"
+    echo "  status            查看状态"
+    echo "  shell|exec        进入容器 shell"
+    echo "  help|-h|--help    显示帮助"
     echo ""
     echo "环境变量:"
     echo "  DOCKERUN_PORT    主机端口（默认: 8080）"
@@ -240,6 +243,9 @@ main() {
             ;;
         remove|rm)
             remove_container
+            ;;
+        remove-image|rmi)
+            remove_image
             ;;
         logs)
             show_logs
