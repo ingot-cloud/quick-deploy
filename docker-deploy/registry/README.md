@@ -62,3 +62,21 @@ auth:
     realm: basic-realm
     path: /auth/htpasswd
 ```
+
+## Https
+在生产环境，建议为 Registry 配置 HTTPS：
+如果是测试环境，可以使用自签名证书
+```bash
+# 生成自签名证书
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout registry.key \
+  -x509 -days 365 -out registry.crt \
+  -subj "/CN=192.168.0.170"
+
+# 启动带 TLS 的 Registry
+docker run -d -p 5000:5000 \
+  -v $(pwd)/registry.crt:/certs/registry.crt \
+  -v $(pwd)/registry.key:/certs/registry.key \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \
+  registry:2
+```
