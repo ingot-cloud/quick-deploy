@@ -1,34 +1,26 @@
 #!/usr/bin/env bash
 
+source ./.env
 
-currentPath=`cd $(dirname $0);pwd -P`
+CURRENT_DIR=`cd $(dirname $0);pwd -P`
 
-
-mkdir -p /ingot-data/docker/volumes/registry/images
-mkdir -p /ingot-data/docker/volumes/registry/auth
-mkdir -p /ingot-data/docker/volumes/registry/config
+mkdir -p ${WORK_DIR}/volumes/images
+mkdir -p ${WORK_DIR}/volumes/auth
+mkdir -p ${WORK_DIR}/volumes/config
 
 
 # 配置htpasswd
-cp ${currentPath}/auth/* /ingot-data/docker/volumes/registry/auth
-cp ${currentPath}/default.yml /ingot-data/docker/volumes/registry/config
-
-
-VIRTUAL_HOST=docker-registry.ingotcloud.top
-VIRTUAL_PORT=5000
-
+cp ${CURRENT_DIR}/auth/* ${WORK_DIR}/volumes/auth
+cp ${CURRENT_DIR}/config.yml ${WORK_DIR}/volumes/config
 
 docker run --name registry \
- --network ingot-net --ip 172.88.0.5 \
+ --network ingot-net \
  --restart=always \
  --privileged=true \
- -v /ingot-data/docker/volumes/registry/config/default.yml:/etc/docker/registry/config.yml \
- -v /ingot-data/docker/volumes/registry/images:/var/lib/registry \
- -v /ingot-data/docker/volumes/registry/auth:/auth \
+ -v ${WORK_DIR}/volumes/config/config.yml:/etc/distribution/config.yml \
+ -v ${WORK_DIR}/volumes/images:/var/lib/registry \
+ -v ${WORK_DIR}/volumes/auth:/auth \
  -e VIRTUAL_HOST=${VIRTUAL_HOST} \
  -e VIRTUAL_PORT=${VIRTUAL_PORT} \
  -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
- -e "REGISTRY_AUTH=htpasswd" \
- -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
- -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
- -d registry:3.0.0
+ -d docker-registry.ingotcloud.top/registry:3.0.0

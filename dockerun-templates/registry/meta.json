@@ -1,0 +1,28 @@
+{
+  "id": "registry",
+  "name": "Registry",
+  "description": "Deploy Registry server",
+  "category": "Registry",
+  "icon": "🔑",
+  "main_script": "deploy.sh",
+  "work_dir": "/ingot-data/dockerun/registry",
+  "env_vars": {
+    "CONTEINER_NAME": "registry",
+    "DOCKER_NETWORK": "ingot-net",
+    "REGISTRY_IMAGE": "docker-registry.ingotcloud.top/registry",
+    "REGISTRY_PORT": "5000",
+    "REGISTRY_VERSION": "3.0.0",
+    "VIRTUAL_HOST": "docker-registry.ingotcloud.top",
+    "VIRTUAL_PORT": "5000"
+  },
+  "files": [
+    {
+      "file_name": "config.yml", 
+      "file_path": "config/config.yml",
+      "source": "files/config.yml", 
+      "file_type": "config",      
+      "description": "Registry configuration file" 
+    }
+  ]
+}
+
