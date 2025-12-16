@@ -57,35 +57,33 @@
 ```bash
 cd scripts
 
-# 启动 MySQL
-./docker-manager.sh examples/mysql-run.sh start
+# 启动 MySQL (只需配置文件!)
+./docker-manager.sh examples/mysql.env start
 
 # 启动 Redis
-./docker-manager.sh examples/redis-run.sh start
+./docker-manager.sh examples/redis.env start
 
 # 启动 Nginx
-./docker-manager.sh examples/nginx-run.sh start
+./docker-manager.sh examples/nginx.env start
 
-# 查看高级示例(展示所有高级参数用法)
+# 查看高级示例(自定义执行脚本)
 ./docker-manager.sh examples/advanced-app-run.sh start
 ```
 
-### 方式 2: 创建自己的应用
+### 方式 2: 创建自己的应用 (推荐)
 
 ```bash
-# 1. 复制模板
+# 1. 复制配置文件模板
 cp example.env myapp.env
-cp example-run.sh myapp-run.sh
 
 # 2. 编辑配置文件
 vi myapp.env
 
-# 3. 编辑执行脚本(修改 CONFIG_FILE 路径)
-vi myapp-run.sh
-
-# 4. 启动容器
-./docker-manager.sh myapp-run.sh start
+# 3. 启动容器(自动使用通用执行脚本)
+./docker-manager.sh myapp.env start
 ```
+
+**就这么简单!只需要一个配置文件!** ⭐
 
 ---
 
@@ -166,22 +164,22 @@ CMD="$CMD --storage-opt size=10G"
 ## 📋 常用命令
 
 ```bash
-./docker-manager.sh <执行脚本> <命令> [选项]
+./docker-manager.sh <配置文件.env|执行脚本.sh> <命令> [选项]
 ```
 
 | 命令 | 说明 | 示例 |
 |------|------|------|
-| `start` | 启动容器 | `./docker-manager.sh myapp-run.sh start` |
-| `stop` | 停止容器 | `./docker-manager.sh myapp-run.sh stop` |
-| `restart` | 重启容器 | `./docker-manager.sh myapp-run.sh restart` |
-| `remove` / `rm` | 删除容器 | `./docker-manager.sh myapp-run.sh rm` |
-| `remove-all` / `rmi` | 删除容器和镜像 | `./docker-manager.sh myapp-run.sh rmi` |
-| `status` / `ps` | 查看状态 | `./docker-manager.sh myapp-run.sh status` |
-| `logs [lines]` | 查看日志 | `./docker-manager.sh myapp-run.sh logs 200` |
-| `logs -f` | 实时日志 | `./docker-manager.sh myapp-run.sh logs -f` |
-| `exec [shell]` | 进入容器 | `./docker-manager.sh myapp-run.sh exec bash` |
-| `inspect` | 查看详细信息 | `./docker-manager.sh myapp-run.sh inspect` |
-| `stats` | 查看资源使用 | `./docker-manager.sh myapp-run.sh stats` |
+| `start` | 启动容器 | `./docker-manager.sh myapp.env start` |
+| `stop` | 停止容器 | `./docker-manager.sh myapp.env stop` |
+| `restart` | 重启容器 | `./docker-manager.sh myapp.env restart` |
+| `remove` / `rm` | 删除容器 | `./docker-manager.sh myapp.env rm` |
+| `remove-all` / `rmi` | 删除容器和镜像 | `./docker-manager.sh myapp.env rmi` |
+| `status` / `ps` | 查看状态 | `./docker-manager.sh myapp.env status` |
+| `logs [lines]` | 查看日志 | `./docker-manager.sh myapp.env logs 200` |
+| `logs -f` | 实时日志 | `./docker-manager.sh myapp.env logs -f` |
+| `exec [shell]` | 进入容器 | `./docker-manager.sh myapp.env exec bash` |
+| `inspect` | 查看详细信息 | `./docker-manager.sh myapp.env inspect` |
+| `stats` | 查看资源使用 | `./docker-manager.sh myapp.env stats` |
 | `help` | 显示帮助 | `./docker-manager.sh help` |
 
 ---
@@ -191,21 +189,19 @@ CMD="$CMD --storage-opt size=10G"
 ```
 scripts/
 ├── docker-manager.sh            # 管理脚本 ⭐
+├── docker-run.sh                # 通用执行脚本 ⭐
 ├── example.env                  # 配置文件模板 ⭐
-├── example-run.sh               # 执行脚本模板 ⭐
+├── example-run.sh               # 自定义执行脚本模板(高级用法)
 ├── DOCKER_MANAGER_V2_GUIDE.md   # 详细文档
 ├── QUICK_START.md               # 快速开始
 ├── README.md                    # 本文件
-└── examples/                 # 应用示例 ⭐
+└── examples/                    # 应用示例 ⭐
     ├── README.md
-    ├── mysql.env
-    ├── mysql-run.sh
-    ├── redis.env
-    ├── redis-run.sh
-    ├── nginx.env
-    ├── nginx-run.sh
-    ├── advanced-app.env         # 高级示例
-    └── advanced-app-run.sh
+    ├── mysql.env                # MySQL 配置
+    ├── redis.env                # Redis 配置
+    ├── nginx.env                # Nginx 配置
+    ├── advanced-app.env         # 高级示例配置
+    └── advanced-app-run.sh      # 自定义脚本示例
 ```
 
 ---
@@ -219,13 +215,12 @@ scripts/
 ```
 project/
 ├── docker-manager.sh           # 管理脚本
-├── apps/                       # 应用配置目录
+├── docker-run.sh               # 通用执行脚本
+├── apps/                       # 应用配置目录(只需.env文件!)
 │   ├── mysql.env
-│   ├── mysql-run.sh
 │   ├── redis.env
-│   ├── redis-run.sh
 │   ├── nginx.env
-│   └── nginx-run.sh
+│   └── myapp.env
 └── data/                       # 数据目录
     ├── mysql/
     ├── redis/
@@ -234,15 +229,20 @@ project/
 
 ### 2. 命名规范
 
-- 配置文件: `<应用名>.env`
-- 执行脚本: `<应用名>-run.sh`
+- 配置文件: `<应用名>-<环境>.env`
 - 容器名称: `<应用名>-<环境>`
+- 自定义脚本(可选): `<应用名>-run.sh`
 
 示例:
-```
-myapp-prod.env
-myapp-prod-run.sh
-CONTAINER_NAME="myapp-prod"
+```bash
+# 不同环境的配置
+myapp-dev.env       → CONTAINER_NAME="myapp-dev"
+myapp-test.env      → CONTAINER_NAME="myapp-test"
+myapp-prod.env      → CONTAINER_NAME="myapp-prod"
+
+# 启动不同环境
+./docker-manager.sh myapp-dev.env start
+./docker-manager.sh myapp-prod.env start
 ```
 
 ### 3. 安全建议
@@ -307,17 +307,26 @@ CMD="$CMD --your-parameter value"
 ### Q4: 如何批量管理多个容器?
 
 ```bash
-# 批量启动
+# 批量启动(简化版!)
 for app in mysql redis nginx; do
-    ./docker-manager.sh ${app}-run.sh start
+    ./docker-manager.sh examples/${app}.env start
 done
 
 # 批量查看状态
 for app in mysql redis nginx; do
     echo "=== $app ==="
-    ./docker-manager.sh ${app}-run.sh status
+    ./docker-manager.sh examples/${app}.env status
 done
 ```
+
+### Q5: 什么时候需要自定义执行脚本?
+
+大多数情况下不需要!只有以下场景才需要:
+- 需要在启动前执行特殊的检查逻辑
+- 需要动态生成配置文件
+- 需要与其他系统集成
+
+99% 的情况下,只需编辑 `.env` 配置文件即可!
 
 ---
 

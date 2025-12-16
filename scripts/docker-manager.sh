@@ -77,13 +77,6 @@ check_docker() {
 start_container() {
     local run_script="$1"
     
-    if [ ! -f "$run_script" ]; then
-        log_error "执行脚本不存在: $run_script"
-        exit 1
-    fi
-    
-    log_step "执行启动脚本: $run_script"
-    
     # 检查容器是否已存在
     if [ -n "$CONTAINER_NAME" ]; then
         if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
@@ -100,6 +93,8 @@ start_container() {
             fi
         fi
     fi
+    
+    log_step "执行启动脚本: $run_script"
     
     # 执行启动脚本
     bash "$run_script"
@@ -303,11 +298,11 @@ ${CYAN}Docker 容器管理脚本 V2${NC}
 
 ${YELLOW}架构说明:${NC}
   1. 配置文件 (.env) - 定义环境变量
-  2. 执行脚本 (-run.sh) - 编写具体的 docker run 命令
+  2. 执行脚本 (docker-run.sh 或自定义) - 编写具体的 docker run 命令
   3. 管理脚本 (本脚本) - 提供容器管理功能
 
 ${YELLOW}用法:${NC}
-  $(basename "$0") <执行脚本> <命令> [选项]
+  $(basename "$0") <配置文件.env|执行脚本.sh> <命令> [选项]
 
 ${YELLOW}命令:${NC}
   start                启动容器（执行启动脚本）
@@ -324,38 +319,36 @@ ${YELLOW}命令:${NC}
   help                 显示帮助信息
 
 ${YELLOW}示例:${NC}
-  # 启动容器
-  $(basename "$0") myapp-run.sh start
+  # 方式 1: 使用配置文件(推荐,自动使用通用执行脚本)
+  $(basename "$0") myapp.env start
+  $(basename "$0") myapp.env stop
+  $(basename "$0") myapp.env logs -f
+  $(basename "$0") myapp.env exec
 
-  # 停止容器
-  $(basename "$0") myapp-run.sh stop
-
-  # 查看日志
-  $(basename "$0") myapp-run.sh logs -f
-
-  # 进入容器
-  $(basename "$0") myapp-run.sh exec
-
-  # 查看状态
-  $(basename "$0") myapp-run.sh status
+  # 方式 2: 使用自定义执行脚本(高级用法)
+  $(basename "$0") myapp-custom-run.sh start
 
 ${YELLOW}文件结构:${NC}
-  myapp.env           # 配置文件（定义环境变量）
-  myapp-run.sh        # 执行脚本（编写 docker run 命令）
-  docker-manager.sh   # 管理脚本（本脚本）
+  方式 1 (推荐):
+    myapp.env           # 配置文件（定义环境变量）
+    docker-run.sh       # 通用执行脚本（自动使用）
+    docker-manager.sh   # 管理脚本（本脚本）
 
-${YELLOW}工作流程:${NC}
+  方式 2 (自定义):
+    myapp.env           # 配置文件（定义环境变量）
+    myapp-run.sh        # 自定义执行脚本
+    docker-manager.sh   # 管理脚本（本脚本）
+
+${YELLOW}快速开始:${NC}
   1. 创建配置文件: cp example.env myapp.env
-  2. 创建执行脚本: cp example-run.sh myapp-run.sh
-  3. 编辑配置文件: vi myapp.env
-  4. 编辑执行脚本: vi myapp-run.sh（根据需要添加 --ip、--add-host 等参数）
-  5. 启动容器: $(basename "$0") myapp-run.sh start
+  2. 编辑配置文件: vi myapp.env
+  3. 启动容器: $(basename "$0") myapp.env start
 
 ${YELLOW}优势:${NC}
-  ✓ 完全灵活 - 在执行脚本中可以使用任何 docker run 参数
-  ✓ 易于维护 - 配置和命令分离，清晰明了
-  ✓ 无需适配 - Docker 更新后无需修改管理脚本
-  ✓ 复用简单 - 复制配置文件和执行脚本即可
+  ✓ 极简使用 - 只需编辑配置文件即可
+  ✓ 完全灵活 - 支持所有 docker run 参数
+  ✓ 易于维护 - 配置和命令分离,清晰明了
+  ✓ 复用简单 - 只需复制配置文件
 
 EOF
 }
@@ -374,28 +367,73 @@ main() {
     # 检查 Docker
     check_docker
     
-    # 获取执行脚本和命令
-    local run_script="$1"
+    # 获取第一个参数和命令
+    local first_arg="$1"
     local command="${2:-help}"
     shift 2 || shift || true
     
     # 如果第一个参数是帮助命令
-    if [ "$run_script" = "help" ] || [ "$run_script" = "--help" ] || [ "$run_script" = "-h" ]; then
+    if [ "$first_arg" = "help" ] || [ "$first_arg" = "--help" ] || [ "$first_arg" = "-h" ]; then
         show_help
         exit 0
     fi
     
-    # 加载执行脚本中的环境变量（如果定义了配置文件）
-    if [ -f "$run_script" ]; then
+    # 获取脚本所在目录
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local run_script=""
+    local config_file=""
+    
+    # 判断传入的是配置文件(.env)还是执行脚本(.sh)
+    if [[ "$first_arg" == *.env ]]; then
+        # 传入的是配置文件,使用默认的通用执行脚本
+        config_file="$first_arg"
+        run_script="$script_dir/docker-run.sh"
+        
+        if [ ! -f "$run_script" ]; then
+            log_error "通用执行脚本不存在: $run_script"
+            exit 1
+        fi
+        
+        if [ ! -f "$config_file" ]; then
+            log_error "配置文件不存在: $config_file"
+            exit 1
+        fi
+        
+        log_info "使用配置文件: $config_file"
+        log_info "使用通用执行脚本: docker-run.sh"
+        
+        # 加载配置文件
+        # shellcheck source=/dev/null
+        source "$config_file"
+        
+        # 导出配置文件路径供执行脚本使用
+        export CONFIG_FILE="$config_file"
+        
+    else
+        # 传入的是自定义执行脚本
+        run_script="$first_arg"
+        
+        if [ ! -f "$run_script" ]; then
+            log_error "执行脚本不存在: $run_script"
+            exit 1
+        fi
+        
+        log_info "使用自定义执行脚本: $run_script"
+        
         # 从执行脚本中提取配置文件路径
-        local config_file
         config_file=$(grep -E "^CONFIG_FILE=" "$run_script" | head -1 | cut -d'=' -f2 | tr -d '"' | tr -d "'")
         
         # 如果配置文件存在，则加载
-        if [ -n "$config_file" ] && [ -f "$config_file" ]; then
-            log_info "加载配置文件: $config_file"
-            # shellcheck source=/dev/null
-            source "$config_file"
+        if [ -n "$config_file" ]; then
+            if [ -f "$config_file" ]; then
+                log_info "加载配置文件: $config_file"
+                # shellcheck source=/dev/null
+                source "$config_file"
+            elif [ -f "$script_dir/$config_file" ]; then
+                log_info "加载配置文件: $config_file"
+                # shellcheck source=/dev/null
+                source "$script_dir/$config_file"
+            fi
         fi
         
         # 加载执行脚本中定义的环境变量

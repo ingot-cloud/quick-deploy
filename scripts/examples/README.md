@@ -1,97 +1,137 @@
-# Docker 管理脚本 V2 - 应用示例
+# Docker 管理脚本 - 应用示例
 
-这个目录包含了使用新架构的实际应用示例。
+这个目录包含了各种应用的配置文件示例。
 
 ## 📁 示例列表
 
-### 1. MySQL 数据库
+### 1. MySQL 数据库 ⭐
 
 - **配置文件**: `mysql.env`
-- **执行脚本**: `mysql-run.sh`
 - **说明**: MySQL 8.0 数据库,包含数据持久化、健康检查、资源限制配置
 
 ```bash
-# 使用方法
+# 使用方法(只需配置文件即可)
 cd scripts
-./docker-manager.sh examples-v2/mysql-run.sh start
-./docker-manager.sh examples-v2/mysql-run.sh logs -f
+./docker-manager.sh examples/mysql.env start
+./docker-manager.sh examples/mysql.env logs -f
+./docker-manager.sh examples/mysql.env status
 ```
 
-### 2. Redis 缓存
+### 2. Redis 缓存 ⭐
 
 - **配置文件**: `redis.env`
-- **执行脚本**: `redis-run.sh`
 - **说明**: Redis 7 缓存服务器,支持数据持久化和自定义配置
 
 ```bash
 # 使用方法
 cd scripts
-./docker-manager.sh examples-v2/redis-run.sh start
-./docker-manager.sh examples-v2/redis-run.sh status
+./docker-manager.sh examples/redis.env start
+./docker-manager.sh examples/redis.env exec
 ```
 
-### 3. Nginx Web 服务器
+### 3. Nginx Web 服务器 ⭐
 
 - **配置文件**: `nginx.env`
-- **执行脚本**: `nginx-run.sh`
 - **说明**: Nginx Web 服务器,展示如何使用 `--add-host` 进行主机名映射(用于反向代理)
 
 ```bash
 # 使用方法
 cd scripts
-./docker-manager.sh examples-v2/nginx-run.sh start
-./docker-manager.sh examples-v2/nginx-run.sh exec
+./docker-manager.sh examples/nginx.env start
+./docker-manager.sh examples/nginx.env status
 ```
 
-### 4. 高级应用示例 ⭐
+### 4. 高级应用示例 - 自定义执行脚本 🔧
 
 - **配置文件**: `advanced-app.env`
-- **执行脚本**: `advanced-app-run.sh`
-- **说明**: 展示如何使用高级参数:
-  - ✅ `--ip` - 静态 IP 配置
-  - ✅ `--add-host` - 主机名映射
-  - ✅ `--device` - 设备映射
-  - ✅ `--cap-add` - Linux Capabilities
-  - ✅ `--sysctl` - 内核参数
-  - ✅ `--ulimit` - 资源限制
-  - ✅ `--dns` - DNS 配置
+- **执行脚本**: `advanced-app-run.sh` (自定义脚本示例)
+- **说明**: 展示如何使用自定义执行脚本实现特殊逻辑
 
 ```bash
-# 使用方法(需要先创建网络)
+# 使用方法(使用自定义执行脚本)
 docker network create --subnet=172.20.0.0/16 custom-net
 cd scripts
-./docker-manager.sh examples-v2/advanced-app-run.sh start
+./docker-manager.sh examples/advanced-app-run.sh start
 ```
+
+---
 
 ## 🚀 快速开始
 
-### 直接使用示例
+### 方式 1: 直接使用示例 (最简单)
 
 ```bash
-# 1. 进入 scripts 目录
 cd scripts
 
-# 2. 选择一个示例启动
-./docker-manager.sh examples-v2/mysql-run.sh start
+# 启动 MySQL
+./docker-manager.sh examples/mysql.env start
+
+# 启动 Redis  
+./docker-manager.sh examples/redis.env start
+
+# 启动 Nginx
+./docker-manager.sh examples/nginx.env start
 ```
 
-### 基于示例创建自己的应用
+### 方式 2: 基于示例创建自己的应用
 
 ```bash
-# 1. 复制示例文件
-cp examples-v2/mysql.env myapp.env
-cp examples-v2/mysql-run.sh myapp-run.sh
+# 1. 复制示例配置文件
+cp examples/mysql.env myapp.env
 
-# 2. 编辑配置文件
+# 2. 编辑配置
 vi myapp.env
 
-# 3. 编辑执行脚本(修改 CONFIG_FILE 路径)
-vi myapp-run.sh
+# 3. 启动(自动使用通用执行脚本)
+./docker-manager.sh myapp.env start
+```
+
+---
+
+## 💡 架构说明
+
+### 新的简化架构
+
+现在你**只需要一个配置文件**就可以启动容器!
+
+```
+┌──────────────┐
+│ mysql.env    │ ─────┐
+│ (配置文件)   │      │
+└──────────────┘      │
+                      ├───> docker-manager.sh ───> docker-run.sh ───> Docker 容器
+┌──────────────┐      │     (管理脚本)            (通用执行脚本)
+│ redis.env    │ ─────┘
+│ (配置文件)   │
+└──────────────┘
+```
+
+**工作流程**:
+1. 你只需编辑 `.env` 配置文件
+2. 运行 `./docker-manager.sh myapp.env start`
+3. 管理脚本自动使用通用的 `docker-run.sh` 执行脚本
+4. 容器启动成功!
+
+### 自定义执行脚本(高级)
+
+如果你需要特殊的逻辑,可以创建自定义执行脚本:
+
+```bash
+# 1. 复制通用执行脚本
+cp docker-run.sh myapp-custom-run.sh
+
+# 2. 修改 CONFIG_FILE 指向你的配置
+vi myapp-custom-run.sh
 # CONFIG_FILE="myapp.env"
 
-# 4. 启动容器
-./docker-manager.sh myapp-run.sh start
+# 3. 添加自定义逻辑
+# ... 在脚本中添加你需要的特殊处理 ...
+
+# 4. 使用自定义脚本启动
+./docker-manager.sh myapp-custom-run.sh start
 ```
+
+---
 
 ## 📋 配置修改指南
 
@@ -112,6 +152,10 @@ PORTS="3307:3306"  # 主机端口改为 3307
 # 修改资源限制
 CPU_LIMIT="4.0"
 MEMORY_LIMIT="4g"
+
+# 使用静态 IP
+NETWORK_NAME="backend-net"
+CONTAINER_IP="172.20.0.10"
 ```
 
 ### Redis 配置修改
@@ -147,6 +191,8 @@ EXTRA_HOSTS="
 "
 ```
 
+---
+
 ## 🌟 高级用法示例
 
 ### 使用静态 IP
@@ -155,12 +201,12 @@ EXTRA_HOSTS="
 # 1. 创建自定义网络
 docker network create --subnet=172.20.0.0/16 backend-net
 
-# 2. 修改配置文件
+# 2. 在配置文件中添加
 NETWORK_NAME="backend-net"
 CONTAINER_IP="172.20.0.10"
 
 # 3. 启动容器
-./docker-manager.sh myapp-run.sh start
+./docker-manager.sh myapp.env start
 ```
 
 ### 添加主机名映射
@@ -169,9 +215,9 @@ CONTAINER_IP="172.20.0.10"
 
 ```bash
 EXTRA_HOSTS="
-192.168.1.100:database.local
-192.168.1.101:cache.local
-192.168.1.102:api.local
+192.168.1.10:database.local
+192.168.1.11:cache.local
+192.168.1.12:api.local
 "
 ```
 
@@ -186,8 +232,6 @@ DEVICES="
 "
 ```
 
-在执行脚本中已实现支持,参考 `advanced-app-run.sh`。
-
 ### 配置内核参数
 
 在配置文件中添加:
@@ -199,19 +243,21 @@ net.core.somaxconn=65535
 "
 ```
 
+---
+
 ## 🔧 故障排查
 
 ### 容器无法启动
 
 ```bash
 # 查看详细错误
-./docker-manager.sh myapp-run.sh logs
+./docker-manager.sh myapp.env logs
 
 # 检查镜像
 docker images | grep myapp
 
-# 手动测试命令
-# 从执行脚本输出的命令复制,手动执行
+# 检查配置文件语法
+source myapp.env && echo "配置文件语法正确"
 ```
 
 ### 网络连接问题
@@ -241,39 +287,46 @@ sudo chown -R 1000:1000 /data/myapp
 RUN_AS_USER="1000:1000"
 ```
 
+---
+
 ## 📚 更多信息
 
-- 查看主文档: [DOCKER_MANAGER_V2_GUIDE.md](../DOCKER_MANAGER_V2_GUIDE.md)
-- 查看模板文件: [example.env](../example.env) 和 [example-run.sh](../example-run.sh)
+- **快速开始**: [../QUICK_START.md](../QUICK_START.md)
+- **详细文档**: [../DOCKER_MANAGER_V2_GUIDE.md](../DOCKER_MANAGER_V2_GUIDE.md)
+- **配置模板**: [../example.env](../example.env)
+
+---
 
 ## 💡 提示
 
-1. **修改配置前先备份**
+1. **现在更简单了!**
    ```bash
-   cp mysql.env mysql.env.bak
+   # 只需要配置文件,无需执行脚本
+   cp examples/mysql.env myapp.env
+   vi myapp.env
+   ./docker-manager.sh myapp.env start
    ```
 
 2. **测试配置**
    ```bash
    # 启动后检查状态
-   ./docker-manager.sh mysql-run.sh status
-   ./docker-manager.sh mysql-run.sh logs
+   ./docker-manager.sh myapp.env status
+   ./docker-manager.sh myapp.env logs
    ```
 
 3. **使用版本控制**
    ```bash
-   git add mysql.env mysql-run.sh
-   git commit -m "Add MySQL configuration"
+   git add myapp.env
+   git commit -m "Add myapp configuration"
    ```
 
 4. **环境分离**
    ```bash
    # 为不同环境创建不同配置
-   mysql-dev.env / mysql-dev-run.sh
-   mysql-prod.env / mysql-prod-run.sh
+   mysql-dev.env
+   mysql-prod.env
    ```
 
 ---
 
 **祝使用愉快! 🚀**
-

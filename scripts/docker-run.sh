@@ -1,29 +1,30 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Docker 容器运行脚本示例
+# Docker 容器通用运行脚本
 # 
 # 说明:
-#   这个脚本包含具体的 docker run 命令
-#   你可以在这里自由编写任何 docker run 参数，包括:
-#     --ip, --add-host, --device, --cap-add, --sysctl 等等
-#   
-# 使用方法:
-#   1. 复制此文件: cp example-run.sh myapp-run.sh
-#   2. 创建配置文件: cp example.env myapp.env
-#   3. 编辑配置文件: vi myapp.env
-#   4. 编辑此脚本，添加你需要的参数
-#   5. 启动: ./docker-manager.sh myapp-run.sh start
+#   这是一个通用的执行脚本,通过环境变量 CONFIG_FILE 指定配置文件
+#   通常由 docker-manager.sh 自动调用,无需手动执行
+#
+# 环境变量:
+#   CONFIG_FILE - 配置文件路径(必需)
 ###############################################################################
 
-# 配置文件路径（相对于脚本目录）
-CONFIG_FILE="example.env"
+# 检查配置文件参数
+if [ -z "$CONFIG_FILE" ]; then
+    echo "错误: 未设置 CONFIG_FILE 环境变量"
+    exit 1
+fi
 
 # 获取脚本所在目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 加载配置文件
-if [ -f "$SCRIPT_DIR/$CONFIG_FILE" ]; then
+if [ -f "$CONFIG_FILE" ]; then
+    # shellcheck source=/dev/null
+    source "$CONFIG_FILE"
+elif [ -f "$SCRIPT_DIR/$CONFIG_FILE" ]; then
     # shellcheck source=/dev/null
     source "$SCRIPT_DIR/$CONFIG_FILE"
 else
@@ -64,7 +65,7 @@ create_directories() {
             local host_path
             host_path=$(echo "$volume" | cut -d':' -f1)
             
-            # 如果是绝对路径且不存在，则创建
+            # 如果是绝对路径且不存在,则创建
             if [[ "$host_path" == /* ]] && [ ! -e "$host_path" ]; then
                 echo "创建目录: $host_path"
                 mkdir -p "$host_path"
@@ -78,7 +79,7 @@ check_image() {
     echo "检查镜像: $IMAGE_NAME"
     
     if ! docker image inspect "$IMAGE_NAME" &> /dev/null; then
-        echo "镜像不存在，尝试拉取..."
+        echo "镜像不存在,尝试拉取..."
         if docker pull "$IMAGE_NAME"; then
             echo "镜像拉取成功"
         else
@@ -105,12 +106,6 @@ check_image
 
 echo "开始启动容器: $CONTAINER_NAME"
 
-# ====================================
-# 构建 docker run 命令
-# ====================================
-# 这里你可以完全自定义 docker run 的参数
-# 下面的代码展示了如何使用配置文件中的变量
-
 # 基础命令
 CMD="docker run -d"
 
@@ -126,11 +121,10 @@ fi
 CMD="$CMD --restart ${RESTART_POLICY:-unless-stopped}"
 
 # ========== 网络配置 ==========
-# 自定义网络或网络模式
 if [ -n "$NETWORK_NAME" ]; then
     CMD="$CMD --network $NETWORK_NAME"
     
-    # 静态 IP（只在自定义网络下有效）
+    # 静态 IP
     if [ -n "$CONTAINER_IP" ]; then
         CMD="$CMD --ip $CONTAINER_IP"
     fi
@@ -154,7 +148,6 @@ if [ -n "$ENV_VARS" ]; then
 fi
 
 # ========== 卷挂载 ==========
-# 主机路径挂载
 if [ -n "$VOLUMES" ]; then
     while IFS= read -r volume; do
         [ -z "$volume" ] && continue
@@ -162,7 +155,6 @@ if [ -n "$VOLUMES" ]; then
     done <<< "$VOLUMES"
 fi
 
-# 命名卷
 if [ -n "$NAMED_VOLUMES" ]; then
     while IFS= read -r volume; do
         [ -z "$volume" ] && continue
@@ -222,7 +214,7 @@ fi
 
 # ========== 日志配置 ==========
 CMD="$CMD --log-driver ${LOG_DRIVER:-json-file}"
-if [ "$LOG_DRIVER" = "json-file" ]; then
+if [ "$LOG_DRIVER" = "json-file" ] || [ -z "$LOG_DRIVER" ]; then
     CMD="$CMD --log-opt max-size=${LOG_MAX_SIZE:-10m}"
     CMD="$CMD --log-opt max-file=${LOG_MAX_FILE:-3}"
 fi
@@ -279,6 +271,23 @@ if [ -n "$DEVICES" ]; then
         [ -z "$device" ] && continue
         CMD="$CMD --device $device"
     done <<< "$DEVICES"
+fi
+
+# ========== 系统调用参数 ==========
+if [ -n "$SYSCTL_PARAMS" ]; then
+    while IFS= read -r param; do
+        [ -z "$param" ] && continue
+        CMD="$CMD --sysctl $param"
+    done <<< "$SYSCTL_PARAMS"
+fi
+
+# ========== Ulimit 配置 ==========
+if [ -n "$ULIMIT_NOFILE" ]; then
+    CMD="$CMD --ulimit nofile=$ULIMIT_NOFILE"
+fi
+
+if [ -n "$ULIMIT_NPROC" ]; then
+    CMD="$CMD --ulimit nproc=$ULIMIT_NPROC"
 fi
 
 # ========== 容器标签 ==========
