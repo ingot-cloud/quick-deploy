@@ -2,18 +2,23 @@
 
 ###############################################################################
 # Docker 容器管理脚本 V2
-# 基于配置文件 + 执行脚本的灵活架构
+# 配置文件驱动的简洁架构
 # 
 # 架构说明:
-#   1. 配置文件 (.env) - 定义环境变量
-#   2. 执行脚本 (-run.sh) - 编写具体的 docker run 命令
+#   1. 配置文件 (.env) - 定义环境变量和所有配置项
+#   2. 执行脚本 (docker-run.sh) - 通用执行脚本(自动调用)
 #   3. 管理脚本 (本脚本) - 提供容器管理功能
 #
 # 用法:
-#   ./docker-manager.sh <执行脚本> <命令> [选项]
-#   ./docker-manager.sh myapp-run.sh start
-#   ./docker-manager.sh myapp-run.sh stop
-#   ./docker-manager.sh myapp-run.sh logs -f
+#   方式 1 (推荐): 使用配置文件
+#     ./docker-manager.sh <配置文件.env> <命令> [选项]
+#     ./docker-manager.sh myapp.env start
+#     ./docker-manager.sh myapp.env stop
+#     ./docker-manager.sh myapp.env logs -f
+#
+#   方式 2 (高级): 使用自定义执行脚本
+#     ./docker-manager.sh <自定义脚本.sh> <命令> [选项]
+#     ./docker-manager.sh myapp-custom-run.sh start
 ###############################################################################
 
 set -e
