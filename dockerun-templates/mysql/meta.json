@@ -15,6 +15,13 @@
     "MYSQL_VERSION": "8.0.44",
     "MYSQL_ROOT_PASSWORD": "changeme"
   },
-  "files": []
+  "files": [
+    {
+      "file_name": "01-create-user.sql",
+      "file_path": "init/01-create-user.sql",
+      "source": "files/01-create-user.sql",
+      "file_type": "script",
+      "description": "SQL脚本"
+    }
+  ]
 }
-
