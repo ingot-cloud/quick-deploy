@@ -9,13 +9,13 @@
 **一行命令搞定:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/your-repo/quick-deploy/main/docker/install-docker-online.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/ingot-cloud/quick-deploy/refs/heads/main/docker/install-docker-online.sh | sudo bash
 ```
 
 或下载后执行:
 
 ```bash
-wget https://raw.githubusercontent.com/your-repo/quick-deploy/main/docker/install-docker-online.sh
+wget https://raw.githubusercontent.com/ingot-cloud/quick-deploy/refs/heads/main/docker/install-docker-online.sh
 chmod +x install-docker-online.sh
 sudo ./install-docker-online.sh
 ```
