@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-source ./.env
+source ./mysql.env
 CURRENT_DIR=`cd $(dirname $0);pwd -P`
 
 echo "Deploying MySQL..."
