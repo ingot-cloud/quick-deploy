@@ -1,0 +1,26 @@
+# ====================================
+# MySQL
+# ====================================
+
+services:
+  # ========== MySQL 服务 ==========
+  mysql-db:
+    image: ${MYSQL_IMAGE}:${MYSQL_VERSION:-8.0.44}
+    restart: always
+    networks:
+      - extnet
+    ports:
+      - target: 3306
+        published: ${MYSQL_PORT:-3306}
+    environment:
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${WORK_DIR}/volumes/data:/var/lib/mysql
+      - ${WORK_DIR}/volumes/init:/docker-entrypoint-initdb.d
+
+# ========== 网络配置 ==========
+networks:
+  extnet:
+    name: ${DOCKER_NETWORK}
+    external: true
