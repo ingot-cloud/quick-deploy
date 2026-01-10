@@ -19,4 +19,5 @@ docker run -d --name ${SERVICE_NAME} --restart always \
     -e VIRTUAL_HOST=${VIRTUAL_HOST} \
     -e VIRTUAL_PORT=${VIRTUAL_PORT} \
     -e LETSENCRYPT_HOST=${VIRTUAL_HOST} \
+    -v ./proxy.conf:/etc/nginx/conf.d/proxy.conf \
     ${IMAGE_NAME}
