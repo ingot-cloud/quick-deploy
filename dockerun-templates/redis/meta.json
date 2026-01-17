@@ -1,7 +1,7 @@
 {
   "id": "redis",
   "name": "Redis",
-  "description": "Deploy Redis cache server",
+  "description": "Deploy Redis Cache Server",
   "category": "Cache",
   "icon": "⚡",
   "main_script": "deploy.sh",
