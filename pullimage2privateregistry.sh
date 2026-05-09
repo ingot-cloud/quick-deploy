@@ -7,8 +7,8 @@
 set -e  # 遇到错误立即退出
 
 # ==================== 配置区 ====================
-IMAGE=${1:-amazoncorretto}
-TAG=${2:-17}
+IMAGE=${1:-nginx}
+TAG=${2:-1.28.3}
 PRIVATE_REGISTRY=docker-registry.ingotcloud.top
 ARCHITECTURES=("amd64" "arm64")
 CLEAN_LOCAL=false  # 是否清理本地临时镜像
