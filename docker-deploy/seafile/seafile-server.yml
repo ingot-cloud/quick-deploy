@@ -122,6 +122,20 @@ services:
     networks:
       - seafile-net
 
+  onlyoffice:
+    image: docker-registry.ingotcloud.top/onlyoffice/documentserver:8.1.0.1
+    container_name: seafile-onlyoffice
+    restart: unless-stopped
+    ports:
+      - "6233:80"
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: "LthlXSJJe5uaKZTalauQ2yUGfvHx5SXPT0F6FTiZ2yo="
+    volumes:
+      - /data/docker-volumes/seafile-onlyoffice:/var/www/onlyoffice/Data
+    networks:
+      - seafile-net
+
 networks:
   seafile-net:
     name: seafile-net
