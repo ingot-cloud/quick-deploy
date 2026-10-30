@@ -20,7 +20,6 @@ CONTAINER_ID=$(docker run -d \
   --name ${CONTEINER_NAME} \
   --restart always \
   --network ${DOCKER_NETWORK} \
-  --ip ${DOCKER_NETWORK_IP} \
   -p ${MYSQL_PORT:-3306}:3306 \
   -e TZ=${TZ} \
   -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
